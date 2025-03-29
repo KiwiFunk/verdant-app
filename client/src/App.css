@@ -40,3 +40,20 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Move these eventually */
+
+.plant-group {
+  width: 90%;
+  min-width: 40px;
+  min-height: 100px;
+  border-radius: 20px;
+
+  background-color: aquamarine;
+
+}
+
+.create-group {
+  background-color: transparent;
+  border: 1px solid #ffffff;
+}
