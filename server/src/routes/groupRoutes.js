@@ -4,6 +4,7 @@ const groupController = require('../controllers/groupController');  // Import gr
 
 router.get('/', groupController.getAllGroups);               
 router.post('/', groupController.createGroup);
+router.patch('/:id', groupController.updateGroup);
 router.delete('/:id', groupController.deleteGroup);
 
 module.exports = router;

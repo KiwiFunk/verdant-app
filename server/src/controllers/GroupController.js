@@ -25,6 +25,20 @@ const groupController = {
         }
     },
 
+    // Update a group (PATCH Request)
+    updateGroup: async (req, res) => {
+        try {
+            const updatedGroup = await Group.findByIdAndUpdate(
+                req.params.id,
+                { name: req.body.name },
+                { new: true }
+            );
+            res.json(updatedGroup);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+
     // Delete a group (DELETE Request)
     deleteGroup: async (req, res) => {
         try {

@@ -5,7 +5,9 @@ import './App.css'
 
 function App() {
   return (
-    <Groups />
+    <div id="app-container">
+      <Groups />
+    </div>
   )
 }
 

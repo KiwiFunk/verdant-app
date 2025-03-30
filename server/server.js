@@ -3,6 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+//Importing models
+require('./src/models/PlantModel');
+require('./src/models/GroupModel'); 
+
 const app = express();
 app.use(express.json());
 app.use(cors());

@@ -1,59 +1,177 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+#app-container {
+  width: 98vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
+#groups-container {
+  width: 88%;
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
 }
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* Move these eventually */
 
 .plant-group {
-  width: 90%;
-  min-width: 40px;
+  width: 100%;
+  min-width: 600px;
   min-height: 100px;
   border-radius: 20px;
 
-  background-color: aquamarine;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 
+  margin-bottom: 14px;
+  background-color: var(--group-color);
+}
+
+.plant-group h3 {
+  font-size: 1.6rem;
+  color: var(--font-color);
+  margin: 6px 0 0 20px;
+}
+
+.group-components {
+  min-height: 200px;
 }
 
 .create-group {
   background-color: transparent;
-  border: 1px solid #ffffff;
+  border: 2px solid var(--font-color);
+  font-size: 1.6rem;
+  color: var(--font-color);
+}
+
+.create-group p {
+  align-self: center;
+  font-size: 0.9em;
+}
+
+.create-group i {
+  font-size: 2em;
+  align-self: center;
+}
+
+.create-group:hover {
+  cursor: pointer;
+}
+
+.groups-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.groups-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.groups-header h2 {
+  font-size: 1.8rem;
+  color: var(--font-color);
+  font-weight: 600;
+}
+
+.add-group-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.add-group-btn:hover {
+  transform: scale(1.1);
+}
+
+.groups-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.group-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.group-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--font-color);
+  cursor: pointer;
+}
+
+.group-name-input {
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 2px solid var(--primary-color);
+  padding: 0.2rem 0;
+  width: 80%;
+  outline: none;
+}
+
+.delete-group-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.delete-group-btn:hover {
+  opacity: 1;
+}
+
+.group-content {
+  min-height: 200px;
+  padding: 1rem;
+}
+
+.empty-group {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+}
+
+.empty-group i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
 }
