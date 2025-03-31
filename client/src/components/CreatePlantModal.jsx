@@ -28,6 +28,18 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
 
     if (!isOpen) return null;
 
+    // Month selection logic
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    
+    const handleMonthChange = (e) => {
+        const selectedMonths = Array.from(document.querySelectorAll('.month-checkbox:checked'))
+            .map(checkbox => checkbox.value);
+        setFormData(prev => ({
+            ...prev,
+            harvestMonths: selectedMonths
+        }));
+    };
+
     return (
         <div className="modal-overlay">
             <div className="modal-content">
@@ -65,6 +77,23 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
                             onChange={(e) => setFormData({...formData, notes: e.target.value})}
                             rows="3"
                         />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Harvest Months</label>
+                        <div className="month-selector">
+                            {months.map(month => (
+                                <label key={month} className="month-toggle">
+                                    <input
+                                        type="checkbox"
+                                        value={month}
+                                        className="month-checkbox"
+                                        onChange={handleMonthChange}
+                                    />
+                                    <span className="month-label">{month.toUpperCase()}</span>
+                                </label>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="form-group color-selector">

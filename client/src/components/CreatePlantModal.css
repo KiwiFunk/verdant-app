@@ -92,6 +92,45 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Month Selector Styling */
+
+.month-selector {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.month-toggle {
+    position: relative;
+    cursor: pointer;
+}
+
+.month-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.month-label {
+    display: block;
+    padding: 8px;
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: var(--border-radius);
+    transition: all 0.2s ease;
+}
+
+.month-checkbox:checked + .month-label {
+    background: var(--primary-color);
+    color: white;
+}
+
+.month-checkbox:focus + .month-label {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
 /* FORM COLOR SELECT */
 .color-selector {
     display: flex;
