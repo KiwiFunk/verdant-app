@@ -102,17 +102,30 @@ function Groups() {
                                     {group.name}
                                 </h3>
                             )}
-                            <button 
-                                className="delete-group-btn"
-                                onClick={() => deleteGroup(group._id)}
-                            >
-                                <i className="bi bi-trash3"></i>
-                            </button>
+                            <div id="group-controls">
+                                <button className="add-plant-btn" onClick={() => console.log('Add Plant')}>
+                                    <i className="bi bi-plus-square"></i>
+                                </button>
+
+                                <button className="delete-group-btn" onClick={() => deleteGroup(group._id)}>
+                                    <i className="bi bi-trash3"></i>
+                                </button>
+                            </div>
                         </div>
+
                         <div className="group-content">
                             {group.plants?.length ? (
                                 <div className="plants-grid">
-                                    {/* Plant cards will go here */}
+                                    {/* Iterate through each of the groups Plant objects */}
+                                    {group.plants.map(plant => (
+                                        // Pass the plant as a prop to the PlantCard component
+                                        <PlantCard 
+                                            key={plant._id}
+                                            plant={plant}
+                                        />
+                                    ))}
+                                    
+                                    <PlantCard plant={group.plants} />
                                 </div>
                             ) : (
                                 <div className="empty-group">
