@@ -3,6 +3,7 @@ import axios from 'axios';
 import './CreatePlantModal.css';
 
 function CreatePlantModal({ groupId, isOpen, onClose }) {
+    // State to hold form data for new plant
     const [formData, setFormData] = useState({
         name: '',
         botanicalName: '',
@@ -12,7 +13,20 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
         baseColor: '#2c5530'
     });
 
-    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5000/api/plants', {
+                ...formData,                // Spread the form data into the request body
+                group: groupId              // Associate the new plant with the selected group
+            });
+            onClose(response.data);         // Pass the new plant back to parent
+        } catch (error) {
+            console.error('Error creating plant:', error);
+        }
+    };
+
+    if (!isOpen) return null;
 
     return (
         <div className="modal-overlay">
