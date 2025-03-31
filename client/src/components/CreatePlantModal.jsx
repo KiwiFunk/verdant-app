@@ -8,7 +8,6 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
         name: '',
         botanicalName: '',
         notes: '',
-        waterLevel: 100,
         harvestMonths: [],
         baseColor: '#2c5530'
     });
@@ -18,6 +17,7 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
         try {
             const response = await axios.post('http://localhost:5000/api/plants', {
                 ...formData,                // Spread the form data into the request body
+                waterLevel: 0,              // Assume new plants have not been watered yet
                 group: groupId              // Associate the new plant with the selected group
             });
             onClose(response.data);         // Pass the new plant back to parent
@@ -67,13 +67,31 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label>Base Color</label>
-                        <input
-                            type="color"
-                            value={formData.baseColor}
-                            onChange={(e) => setFormData({...formData, baseColor: e.target.value})}
-                        />
+                    <div className="form-group color-selector">
+                        {Object.entries({
+                            Red: "#ff4444",
+                            Orange: "#FF7635",
+                            Yellow: "#ffdd44",
+                            Green: "#7f9261",
+                            Blue: "#44aaff",
+                            Purple: "#aa44ff"
+                        }).map(([color, hex]) => (
+                            <label key={color} className="color-toggle">
+                                <input
+                                    type="radio"
+                                    name="plant_color"
+                                    value={hex}
+                                    className="color-checkbox"
+                                    checked={formData.baseColor === hex}
+                                    onChange={(e) => setFormData({...formData, baseColor: e.target.value})}
+                                />
+                                <span 
+                                    className="color-label" 
+                                    style={{ backgroundColor: hex }}
+                                >
+                                </span>
+                            </label>
+                        ))}
                     </div>
 
                     <div className="modal-footer">
