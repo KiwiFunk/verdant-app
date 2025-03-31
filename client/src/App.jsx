@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 import Groups from './components/Groups'
 import './App.css'
+import CreatePlantModal from './components/CreatePlantModal'
 
 function App() {
 
@@ -28,7 +28,7 @@ function App() {
       {isModalOpen && (
         <CreatePlantModal
           groupId={groupId}
-          onOpen={isModalOpen}
+          isOpen={isModalOpen}
           onClose={handleCloseModal}
         />
       )}

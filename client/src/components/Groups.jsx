@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-function Groups() {
+function Groups({ onAddPlant }) {
     const [groups, setGroups] = useState([]);
     const [editingId, setEditingId] = useState(null);
     const [editingName, setEditingName] = useState('');
@@ -103,7 +103,7 @@ function Groups() {
                                 </h3>
                             )}
                             <div id="group-controls">
-                                <button className="add-plant-btn" onClick={() => console.log('Add Plant')}>
+                                <button className="add-plant-btn" onClick={() => onAddPlant(group._id)}>
                                     <i className="bi bi-plus-square"></i>
                                 </button>
 
