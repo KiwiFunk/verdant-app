@@ -23,6 +23,27 @@ const plantController = {
         }
     },
 
+    // Water the target plant (PATCH Request)
+    waterPlant: async (req, res) => {
+        try {
+            const { waterLevel, lastWatered } = req.body;
+            const updatedPlant = await Plant.findByIdAndUpdate(
+                req.params.id,
+                { waterLevel, lastWatered },
+                { new: true }
+            );
+            
+            if (!updatedPlant) {
+                return res.status(404).json({ message: 'Plant not found' });
+            }
+            
+            res.status(200).json(updatedPlant);
+        } catch (error) {
+            console.error('Error watering plant:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
     // Delete specified plant object (DELETE Request)
     deletePlant: async (req, res) => {
         try {
