@@ -1,4 +1,5 @@
 const Group = require('../models/GroupModel');
+var Plant = require('../models/PlantModel');        //Get Plant model for garbage collection
 
 const groupController = {
     // Get all groups (GET Request)
@@ -42,7 +43,18 @@ const groupController = {
     // Delete a group (DELETE Request)
     deleteGroup: async (req, res) => {
         try {
-            await Group.findByIdAndDelete(req.params.id);
+            // Store the target group and delete related objects
+            const targetGroup = await Group.findById(req.params.id);        
+            if (!targetGroup) {
+                return res.status(404).json({ message: 'Group not found' });
+            }
+
+            // Delete all plants that belong to this group
+            await Plant.deleteMany({ group: targetGroup._id });
+
+            // Delete the group itself
+            await targetGroup.deleteOne();
+
             res.json({ message: 'Group deleted successfully' });
         } catch (error) {
             res.status(500).json({ message: error.message });

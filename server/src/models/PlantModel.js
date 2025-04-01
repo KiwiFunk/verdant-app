@@ -12,4 +12,15 @@ const PlantSchema = new mongoose.Schema({
     position: { type: Number }
 });
 
+//Middleware
+
+// Handle relationship cleanup when a plant is deleted; remove plant from group that references it
+PlantSchema.pre('deleteOne', { document: true, query: false }, async function() {
+    const Plant = this.constructor;
+    await mongoose.model('Group').updateMany(
+        { plants: this._id },
+        { $pull: { plants: this._id } }
+    );
+});
+
 module.exports = mongoose.model('Plant', PlantSchema);

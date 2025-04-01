@@ -26,10 +26,14 @@ const plantController = {
     // Delete specified plant object (DELETE Request)
     deletePlant: async (req, res) => {
         try {
-            await Plant.findByIdAndDelete(req.params.id);
+            const plant = await Plant.findById(req.params.id);
+            if (!plant) {
+                return res.status(404).json({ message: 'Plant not found' });
+            }
+            await plant.deleteOne();
             res.status(200).json({ message: 'Plant deleted successfully' });
         } catch (error) {
-            console.error('Couldnt delete plant:', error);
+            console.error('Could not delete plant:', error);
             res.status(500).json({ message: error.message });
         }
     }

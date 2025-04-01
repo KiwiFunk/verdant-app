@@ -19,9 +19,9 @@ function PlantCard({ plant }) {
 
     const deletePlant = async (plantId) => {
         try {
-            await axios.delete(`${API_URL}/${plantId}`); // Delete request
+            await axios.delete(`${API_URL}/${plantId}`);    // Delete request
         } catch (error) {
-            console.error('Error deleting plant:', error); // Handle error
+            console.error('Error deleting plant:', error);  // Handle error
         }
     };
 
