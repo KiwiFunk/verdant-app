@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Groups from './components/Groups'
 import CreatePlantModal from './components/CreatePlantModal'
+import LoadingOverlay from './components/LoadingOverlay'
 import './App.css'
 
 function App() {
@@ -51,13 +52,15 @@ function App() {
   }
   , []);
 
-  // Handle loading and error states
-  // Show loading spinner or error message if applicable
-  if (loading) return <div className="loading">Loading...</div>;
+  // Handle loading and error states (Causes flickering, reimplement later with a delay)
+  //if (loading) return <LoadingOverlay />; 
+
+  // Replace with a proper error page/component
   if (error) return <div className="error">{error}</div>;
 
   return (
     <div id="app-container">
+
       <Groups 
         groups={appData}
         onAddPlant={handleOpenModal}
