@@ -37,9 +37,9 @@ function App() {
     setIsModalOpen(true);
   }
 
-  const handleCloseModal = (newPlant) => {
+  const handleCloseModal = async (newPlant) => {
     if (newPlant) {
-      setShouldRefresh(true); // Trigger groups refresh when plant is created
+      await fetchAppData(); // Trigger groups refresh when plant is created
     }
     setGroupId(null);
     setIsModalOpen(false);
