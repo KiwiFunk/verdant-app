@@ -44,6 +44,21 @@ const plantController = {
         }
     },
 
+    //Get the water level of a plant (GET Request)
+    getWaterLevel: async (req, res) => {
+        try {
+            const plant = await Plant.findById(req.params.id);
+            if (!plant) {
+                return res.status(404).json({ message: 'Plant not found' });
+            }
+            const waterLevel = plant.calculateWaterLevel(); // Calculate water level using the method defined in the model
+            res.json({ waterLevel });                       // Return the water level as a JSON response
+        } catch (err) {
+            res.status(500).json({ message: err.message });
+        }
+    },
+
+
     // Delete specified plant object (DELETE Request)
     deletePlant: async (req, res) => {
         try {
