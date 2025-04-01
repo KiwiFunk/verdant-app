@@ -74,7 +74,7 @@ function PlantCard({ plant, onDataChange }) {
 
                             {harvestMonths && harvestMonths.length > 0 && (
                                 <div className="harvest-months">
-                                    <p><i className="bi bi-flower1"></i> Harvest Months:</p>
+                                    <p><i className="bi bi-flower3"></i> Harvest Months:</p>
                                     <div className="month-bars">
                                         {harvestMonths.map((month) => (
                                             <span key={month} className="month-bar" title={month}>
