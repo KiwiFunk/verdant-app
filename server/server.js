@@ -20,10 +20,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 
-// Example route
-app.get('/', (req, res) => {
-    res.send('Backend is running!');
-});
 app.use('/api/groups', groupRoutes);
 app.use('/api/plants', plantRoutes); 
 
