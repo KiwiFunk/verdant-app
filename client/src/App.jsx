@@ -5,10 +5,30 @@ import CreatePlantModal from './components/CreatePlantModal'
 
 function App() {
 
+  // States to handle app data and global loading/error states
+  const [appData, setAppData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   // Manage states for modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groupId, setGroupId] = useState(null);
   const [shouldRefresh, setShouldRefresh] = useState(false);
+
+  // Fetch all application data (Groups and their plants)
+  const fetchAppData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('http://localhost:5000/api/groups');
+      setAppData(response.data);
+      setError(null);
+    } catch (err) {
+      setError('Failed to fetch data');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Functions for handling modal state
   const handleOpenModal = (id) => {
@@ -24,12 +44,23 @@ function App() {
     setIsModalOpen(false);
   }
 
+  //UseEffect hook to fetch data when the component mounts
+  useEffect(() => {
+    fetchAppData();
+  }
+  , []);
+
+  // Handle loading and error states
+  // Show loading spinner or error message if applicable
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
+
   return (
     <div id="app-container">
       <Groups 
+        groups={appData}
         onAddPlant={handleOpenModal}
-        shouldRefresh={shouldRefresh}
-        onRefreshComplete={() => setShouldRefresh(false)}
+        onDataChange={fetchAppData}
       />
 
       {/* Handle Plant Creation Modal */}
