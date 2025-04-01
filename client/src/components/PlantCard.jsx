@@ -67,6 +67,24 @@ function PlantCard({ plant, onDataChange }) {
                         <div className='lower-card'>
                             {notes && <div className="notes">{notes}</div>}
 
+                            <div className="watering-info">
+                                <i className="bi bi-clock"></i>
+                                Last watered: {lastWatered ? new Date(lastWatered).toLocaleDateString() : "N/A"}
+                            </div>
+
+                            {harvestMonths && harvestMonths.length > 0 && (
+                                <div className="harvest-months">
+                                    <p><i className="bi bi-flower1"></i> Harvest Months:</p>
+                                    <div className="month-bars">
+                                        {harvestMonths.map((month) => (
+                                            <span key={month} className="month-bar" title={month}>
+                                                {month}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                         </div>
 
                     </div>
@@ -92,8 +110,19 @@ function PlantCard({ plant, onDataChange }) {
 
                 </div>
 
-                <div className='status-bars'>
-
+                <div className="status-bars">
+                    <div className="water-indicator-wrapper">
+                        <div className="water-indicator">
+                            <div 
+                                className="water-level" 
+                                style={{
+                                    height: `${waterLevel}%`,
+                                    backgroundColor: getWaterLevelColor(waterLevel)
+                                }}
+                            ></div>
+                        </div>
+                        <span className="water-level-text">{waterLevel}%</span>
+                    </div>
                 </div>
 
             </div>
