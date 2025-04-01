@@ -41,6 +41,13 @@ function PlantCard({ plant, onDataChange }) {
         }
     };
 
+    // Take level int as input and return a color string based on the level
+    const getWaterLevelColor = (level) => {
+        if (level > 50) return '#27b0ff';
+        if (level > 25) return '#ffaa44';
+        return '#ff4444';
+    };
+
     // Plant Card
     return (
         <div className="plant-card">
