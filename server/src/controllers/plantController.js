@@ -13,8 +13,11 @@ const plantController = {
                 { $push: { plants: savedPlant._id } }
             );
             
-            res.status(201).json(savedPlant);
+            // Return populated plant data
+            const populatedPlant = await Plant.findById(savedPlant._id);
+            res.status(201).json(populatedPlant);
         } catch (error) {
+            console.error('Plant creation error:', error);
             res.status(400).json({ message: error.message });
         }
     }

@@ -20,6 +20,7 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
                 waterLevel: 0,              // Assume new plants have not been watered yet
                 group: groupId              // Associate the new plant with the selected group
             });
+            console.log('Plant created:', response.data);
             onClose(response.data);         // Pass the new plant back to parent
         } catch (error) {
             console.error('Error creating plant:', error);
