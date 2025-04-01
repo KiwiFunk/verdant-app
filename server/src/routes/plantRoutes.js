@@ -1,6 +1,6 @@
 const express = require('express');                                 // Import express for Router
 const router = express.Router();                                    // Create a new Router
-const cardController = require('../controllers/cardController');    // Import cardController
+const cardController = require('../controllers/plantController');    // Import cardController
 
 router.get('/', cardController.getAllCards);                        // Get all cards
 router.post('/', cardController.createCard);                        // Create a new card
