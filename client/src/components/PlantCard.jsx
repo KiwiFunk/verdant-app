@@ -32,7 +32,7 @@ function PlantCard({ plant, onDataChange }) {
     // Use PATCH request to water the plant (reset water level to 100, update last watered date)
     const handleWater = async () => {
         try {
-            await axios.patch(`${API_URL}/${_id}`, {
+            await axios.patch(`${API_URL}/water/${_id}`, {
                 waterLevel: 100,
                 lastWatered: new Date()
             });
