@@ -26,11 +26,21 @@ const plantController = {
     // Delete specified plant object (DELETE Request)
     deletePlant: async (req, res) => {
         try {
-            const plant = await Plant.findById(req.params.id);
-            if (!plant) {
+            // First find the plant to get its group ID
+            const targetPlant = await Plant.findById(req.params.id);
+            if (!targetPlant) {
                 return res.status(404).json({ message: 'Plant not found' });
             }
-            await plant.deleteOne();
+
+            // Remove plant reference from its group using $pull
+            await Group.findByIdAndUpdate(
+                targetPlant.group,
+                { $pull: { plants: targetPlant._id } }
+            );
+
+            // Delete the plant
+            await Plant.findByIdAndDelete(req.params.id);
+            
             res.status(200).json({ message: 'Plant deleted successfully' });
         } catch (error) {
             console.error('Could not delete plant:', error);
