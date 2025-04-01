@@ -1,223 +1,145 @@
-/* PLANT CARD STYLES */
-
-/* CONTENT CONTAINERS */
+/* Base Card Layout */
 .plant-card {
     border-radius: var(--border-radius);
     padding: var(--spacing-md);
-    height: 420px;
-    max-width: 400px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    height: 400px;
+    width: 100%;
+    max-width: 330px;
+    box-shadow: var(--shadow-md);
+    color: white;
 }
 
 .card-data {
     height: 100%;
-    width: 100%;
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+    gap: var(--spacing-md);
 }
 
+/* Main Content Area */
 .details-pane {
-    flex-grow: 3;
-
-    height: 100%;
-
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.status-bars {
-    flex-grow: 0;       /* Prevents growing */
-    flex-shrink: 0;     /* Prevents shrinking */
-    flex-basis: auto;   /* Size based on content */
-
-    height: 100%;
-    padding-left: var(--spacing-md);
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
 }
 
 .plant-info {
-    flex-grow: 12;
-    flex-basis: auto;
-
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
+    justify-content: space-between;
 }
 
-.card-controls {
-    flex-grow: 0;       /* Prevents growing */
-    flex-shrink: 0;     /* Prevents shrinking */
-    flex-basis: auto;   /* Size based on content */
-
-    width: 100%;
-    padding-top: var(--spacing-sm);
-
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 8px;
-}
-
-.upper-card {
-    flex-grow: 2;
-    width: 100%;
-}
-
-.lower-card {
-    flex-grow: 0;       /* Prevents growing */
-    flex-shrink: 0;     /* Prevents shrinking */
-    flex-basis: auto;   /* Size based on content */
-    width: 100%;
-
-    align-content: flex-end;
-    padding-bottom: var(--spacing-sm);
-}
-
-/* ELEMENT STYLING */
-
-.upper-card h3,
-.settings-header h3 {
-    font-size: 1.8rem;
-    margin-bottom: var(--spacing-sm);
+/* Header Section */
+.upper-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
     color: white;
 }
 
 .upper-card h4 {
     font-style: italic;
+    font-size: 0.95rem;
     opacity: 0.8;
-    font-size: 1rem;
+}
+
+/* Info Sections */
+.lower-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-top: auto;
+}
+
+.notes,
+.watering-info,
+.harvest-months {
+    width: 100%;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--overlay-light);
 }
 
 .notes {
-    width: 100%;
-
-    margin-top: 1rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.95rem;
 }
-
 
 .watering-info {
     font-size: 0.9rem;
-    opacity: 0.8;
-    width: 100%;
-
-    margin-top: 1rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.watering-info i {
-    margin-right: 5px;
-}
-
-/* harvest month styling */
-.harvest-months {
-    margin-top: 1rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
-}
-
+/* Harvest Months */
 .harvest-months p {
     font-size: 0.9rem;
-    opacity: 0.8;
-    margin-bottom: 0.5rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
-
-.harvest-months i {
-    margin-right: 5px;
-}
+    
 
 .month-bars {
     display: flex;
-    flex-flow: row wrap;
-    gap: 4px;
-    margin-top: 8px;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
 .month-bar {
-    background: rgba(255,255,255,0.1);
-    color: white;
-    padding: 12px 6px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    min-width: 20px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: var(--overlay-light);
+    padding: 12px 8px;
+    min-width: 40px;
+    max-width: 40px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.85rem;
     opacity: 0.8;
-    transition: opacity 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
 }
 
-.month-bar:hover {
-    opacity: 1;
+/* Water Level Indicator */
+.status-bars {
+    width: 55px;
 }
 
-/* water level indicator */
 .water-indicator-wrapper {
-
+    height: 100%;
+    padding: var(--spacing-sm);
+    background: var(--overlay-light);
+    border-radius: var(--border-radius);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 4px;
-
-    padding: var(--spacing-sm);
-    background: rgba(255,255,255,0.1);
-    border-radius: var(--border-radius);
-    min-width: 60px;
-    height: 100%; 
+    gap: 8px;
 }
 
 .water-indicator {
-    position: relative;
-    height: 100%;
-    width: 12px;
-    flex-grow: 1;  
-    background: rgba(255,255,255,0.1);
-    border-radius: 6px;
+    flex: 1;
+    width: 10px;
+    background: var(--overlay-light);
+    border-radius: 5px;
     overflow: hidden;
-    margin: 4px 0;  
+    position: relative;
 }
 
-.water-level {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    transition: all 0.3s ease;
+/* Buttons */
+.card-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--overlay-light);
 }
-
-.water-level-text {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: white;
-    padding: 4px 0; 
-}
-
-[data-waterlevel="100"] { height: 100%; background-color: #27b0ff; }
-[data-waterlevel="75"] { height: 75%; background-color: #27b0ff; }
-[data-waterlevel="50"] { height: 50%; background-color: #ffaa44; }
-[data-waterlevel="25"] { height: 25%; background-color: #ff4444; }
-[data-waterlevel="0"] { height: 0%; background-color: #ff4444; }
 
 .btn {
-    padding: 12px 24px;
+    padding: 10px 20px;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -225,7 +147,7 @@
 }
 
 .water-button {
-    background-color: #27b0ff;
+    background-color: var(--water-high);
     color: white;
 }
 
@@ -234,12 +156,11 @@
     transform: translateY(-2px);
 }
 
-.edit-button {
-    background-color: rgba(255,255,255,0.1);
-    color: #ffffff;
+.delete-button {
+    background-color: var(--overlay-light);
+    color: white;
 }
 
-.edit-button:hover {
-    background-color: #ffffffec;
-    color: rgb(0, 0, 0);
+.delete-button:hover {
+    background-color: var(--water-low);
 }
