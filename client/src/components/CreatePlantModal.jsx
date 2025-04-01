@@ -8,6 +8,7 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
         name: '',
         botanicalName: '',
         notes: '',
+        waterFrequency: 7,           // Default to weekly watering
         harvestMonths: [],
         baseColor: '#2c5530'
     });
@@ -74,10 +75,28 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
                     <div className="form-group">
                         <textarea
                             placeholder="Notes (Optional)"
+                            className="notes-textarea"
                             value={formData.notes}
                             onChange={(e) => setFormData({...formData, notes: e.target.value})}
                             rows="3"
                         />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Watering Frequency</label>
+                        <select
+                            name="waterFrequency"
+                            id="waterFrequency"
+                            className="water-frequency-select"
+                            value={formData.waterFrequency}
+                            onChange={(e) => setFormData({ ...formData, waterFrequency: parseInt(e.target.value) })}
+                            required
+                        >
+                            <option value="1">Daily (Debug)</option>
+                            <option value="7">Weekly</option>
+                            <option value="14">Fortnightly</option>
+                            <option value="28">Monthly</option>
+                        </select>
                     </div>
 
                     <div className="form-group">

@@ -61,6 +61,10 @@
     color: var(--font-color);
 }
 
+.notes-textarea {
+    font-family: inherit;
+}
+
 .modal-footer {
     display: flex;
     justify-content: flex-end;
@@ -172,4 +176,33 @@
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Water Frequency Select */
+
+.water-frequency-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+    color: var(--font-color);
+}
+
+.water-frequency-select:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+    border-color: transparent;
+}
+
+/* Dropdown arrow styling */
+.water-frequency-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%236c757d' d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
 }
