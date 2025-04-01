@@ -8,6 +8,7 @@ function App() {
   // Manage states for modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groupId, setGroupId] = useState(null);
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
   // Functions for handling modal state
   const handleOpenModal = (id) => {
@@ -15,14 +16,21 @@ function App() {
     setIsModalOpen(true);
   }
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (newPlant) => {
+    if (newPlant) {
+      setShouldRefresh(true); // Trigger groups refresh when plant is created
+    }
     setGroupId(null);
     setIsModalOpen(false);
   }
 
   return (
     <div id="app-container">
-      <Groups onAddPlant={handleOpenModal} />
+      <Groups 
+        onAddPlant={handleOpenModal}
+        shouldRefresh={shouldRefresh}
+        onRefreshComplete={() => setShouldRefresh(false)}
+      />
 
       {/* Handle Plant Creation Modal */}
       {isModalOpen && (

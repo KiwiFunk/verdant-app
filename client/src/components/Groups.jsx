@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PlantCard from './PlantCard';
 
-function Groups({ onAddPlant }) {
+function Groups({ onAddPlant, shouldRefresh, onRefreshComplete }) {
     const [groups, setGroups] = useState([]);
     const [editingId, setEditingId] = useState(null);
     const [editingName, setEditingName] = useState('');
@@ -18,6 +18,13 @@ function Groups({ onAddPlant }) {
             editInputRef.current.focus();
         }
     }, [editingId]);
+
+    useEffect(() => {
+        if (shouldRefresh) {
+            fetchGroups();
+            onRefreshComplete();
+        }
+    }, [shouldRefresh, onRefreshComplete]);
 
     const fetchGroups = async () => {
         try {
