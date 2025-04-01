@@ -3,7 +3,6 @@ import axios from 'axios';
 import './PlantCard.css';
 
 function PlantCard({ plant, onDataChange }) {
-
     // Destructure the plant object from the prop to get the data from the fields
     const {
         _id,                   // MongoDB ID for object
@@ -16,8 +15,22 @@ function PlantCard({ plant, onDataChange }) {
         baseColor
     } = plant;
 
+    //State for storing water level
+    const [currentWaterLevel, setCurrentWaterLevel] = useState(waterLevel);
+
     // HTTP Request functions
     const API_URL = 'http://localhost:5000/api/plants';
+    const UPDATE_INTERVAL = 15 * 60 * 1000;                 // 15 minutes (JS Date uses ms)
+
+    // Fetch water level from server (GET)
+    const fetchWaterLevel = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/water-level/${plant._id}`);
+            setCurrentWaterLevel(response.data.waterLevel);
+        } catch (error) {
+            console.error('Error fetching water level:', error);
+        }
+    };
 
     // Delete target plant object (DELETE)
     const deletePlant = async (plantId) => {
@@ -48,6 +61,13 @@ function PlantCard({ plant, onDataChange }) {
         if (level > 25) return '#ffaa44';
         return '#ff4444';
     };
+
+    // Effect to fetch water level using the specified interval
+    useEffect(() => {
+        fetchWaterLevel();                                  // Fetch water level on component mount 
+        const interval = setInterval(fetchWaterLevel, UPDATE_INTERVAL);
+        return () => clearInterval(interval);
+    }, [_id]);
 
     // Plant Card
     return (
