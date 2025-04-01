@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import PlantCard from './PlantCard';
 
 function Groups({ onAddPlant }) {
     const [groups, setGroups] = useState([]);
