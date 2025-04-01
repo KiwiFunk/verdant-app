@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'; // Removed unused useRef
 import axios from 'axios';
+import './PlantCard.css';
 
 function PlantCard({ plant, onDataChange }) {
 
@@ -50,15 +51,53 @@ function PlantCard({ plant, onDataChange }) {
 
     // Plant Card
     return (
-        <div className="plant-card">
-            <h2>{name}</h2>
+        <div className="plant-card" style={{ backgroundColor: baseColor }}>
 
-            {/* Conditional fields to display */}
-            {botanicalName && <p className="botanical-name">{botanicalName}</p>}
-            {notes && <p className="notes">{notes}</p>}
+            <div className='card-data'>
 
-            <button onClick={() => console.log('Edit functionality here')}>Edit</button>
-            <button onClick={() => deletePlant(_id)}>Delete</button>
+                <div className='details-pane'>
+
+                    <div className='plant-info'>
+
+                        <div className='upper-card'>
+                            <h3>{name}</h3>
+                            {botanicalName && <h4>{botanicalName}</h4>}
+                        </div>
+
+                        <div className='lower-card'>
+                            {notes && <div className="notes">{notes}</div>}
+
+                        </div>
+
+                    </div>
+
+                    <div className='card-controls'>
+                        <button 
+                            className="btn water-button" 
+                            onClick={handleWater}
+                            aria-label="Water plant"
+                        >
+                            <i className="bi bi-droplet-fill"></i>
+                            Water
+                        </button>
+                            
+                        <button 
+                            className="btn delete-button"
+                            onClick={() => deletePlant(_id)}
+                            aria-label="Delete plant"
+                        >
+                            <i className="bi bi-trash"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div className='status-bars'>
+
+                </div>
+
+            </div>
+
         </div>
     );
 }
