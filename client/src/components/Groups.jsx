@@ -124,8 +124,6 @@ function Groups({ onAddPlant }) {
                                             plant={plant}
                                         />
                                     ))}
-                                    
-                                    <PlantCard plant={group.plants} />
                                 </div>
                             ) : (
                                 <div className="empty-group">
