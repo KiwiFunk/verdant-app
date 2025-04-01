@@ -2,72 +2,49 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PlantCard from './PlantCard';
 
-function Groups({ onAddPlant, shouldRefresh, onRefreshComplete }) {
-    const [groups, setGroups] = useState([]);
-    const [editingId, setEditingId] = useState(null);
+function Groups({ groups, onAddPlant, onDataChange }) {
+    
+    // States to manage groups and handle their editing states
+    const [editingId, setEditingId] = useState(null);   
     const [editingName, setEditingName] = useState('');
     const editInputRef = useRef(null);
     const API_URL = 'http://localhost:5000/api';
 
-    useEffect(() => {
-        fetchGroups();
-    }, []);
 
-    useEffect(() => {
-        if (editingId && editInputRef.current) {
-            editInputRef.current.focus();
-        }
-    }, [editingId]);
-
-    useEffect(() => {
-        if (shouldRefresh) {
-            fetchGroups();
-            onRefreshComplete();
-        }
-    }, [shouldRefresh, onRefreshComplete]);
-
-    const fetchGroups = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/groups`);
-            setGroups(response.data);
-        } catch (error) {
-            console.error('Error fetching groups:', error);
-        }
-    };
-
+    //Send POST request to create a new group
     const createGroup = async () => {
         try {
-            const response = await axios.post(`${API_URL}/groups`, { name: 'New Group' });
-            setGroups(prev => [...prev, response.data]);
-            setEditingId(response.data._id);
-            setEditingName('New Group');
+            await axios.post(`${API_URL}/groups`, { name: 'New Group' });
+            onDataChange();         // Call the function from props to refresh the data (fetchAppData)
         } catch (error) {
             console.error('Error creating group:', error);
         }
     };
 
+    // PATCH request to update the group name
     const updateGroupName = async (groupId) => {
-        if (!editingName.trim()) return;    // If the name is empty, do not proceed. Use trim() !whitespace.
+        if (!editingName.trim()) return;    // If name empty, break out of function
         try {
             await axios.patch(`${API_URL}/groups/${groupId}`, { name: editingName });
-            setGroups(prev => prev.map(group => 
-                group._id === groupId ? { ...group, name: editingName } : group
-            ));
-            setEditingId(null);
+            onDataChange();                 // Refresh data from parent
+            setEditingId(null);             // Reset editing state
         } catch (error) {
             console.error('Error updating group:', error);
         }
     };
 
+
+    // DELETE request to remove a group (Plants are also deleted server-side)
     const deleteGroup = async (groupId) => {
         try {
-            await axios.delete(`${API_URL}/groups/${groupId}`);
-            setGroups(prev => prev.filter(group => group._id !== groupId));
+            await axios.delete(`${API_URL}/groups/${groupId}`);     // Delete group by ID
+            onDataChange();                                         // Refresh groups     
         } catch (error) {
             console.error('Error deleting group:', error);
         }
     };
 
+    // Functions to handle editing states in the group HTML body
     const handleDoubleClick = (group) => {
         setEditingId(group._id);
         setEditingName(group.name);
@@ -130,6 +107,7 @@ function Groups({ onAddPlant, shouldRefresh, onRefreshComplete }) {
                                         <PlantCard 
                                             key={plant._id}
                                             plant={plant}
+                                            onDataChange={onDataChange} // Pass the function to refresh data
                                         />
                                     ))}
                                 </div>
