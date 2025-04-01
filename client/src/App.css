@@ -196,3 +196,10 @@
   font-size: 2rem;
   margin-bottom: 0.5rem;
 }
+
+.plant-card-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  gap: var(--spacing-md);
+}

@@ -100,7 +100,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
 
                         <div className="group-content">
                             {group.plants?.length ? (
-                                <div className="plants-grid">
+                                <div className="plant-card-container">
                                     {/* Iterate through each of the groups Plant objects */}
                                     {group.plants.map(plant => (
                                         // Pass the plant as a prop to the PlantCard component
