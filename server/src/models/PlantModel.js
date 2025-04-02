@@ -5,7 +5,6 @@ const PlantSchema = new mongoose.Schema({
     botanicalName: { type: String },
     notes: { type: String },
     waterFrequency: { type: Number, default: 7 }, // in days
-    waterLevel: { type: Number, default: 0 },
     lastWatered: { type: Date },
     harvestMonths: [{ type: String }],
     baseColor: { type: String, default: '#2c5530' },

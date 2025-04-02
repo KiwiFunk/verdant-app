@@ -9,7 +9,6 @@ function PlantCard({ plant, onDataChange }) {
         name,                  // Common name of the plant
         botanicalName,         // Scientific name of the plant
         notes,
-        waterLevel,
         lastWatered,
         harvestMonths,
         baseColor
@@ -40,6 +39,13 @@ function PlantCard({ plant, onDataChange }) {
             console.error('Error watering plant:', error);
         }
     };
+
+    //Calculate water level from current date, last watered date, and water frequency
+    const calculateWaterLevel = () => {
+        const now = new Date();
+        const lastWateredDate = new Date(lastWatered);
+    }
+        
 
     // Take level int as input and return a color string based on the level
     const getWaterLevelColor = (level) => {

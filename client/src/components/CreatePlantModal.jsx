@@ -18,7 +18,6 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
         try {
             const response = await axios.post('http://localhost:5000/api/plants', {
                 ...formData,                // Spread the form data into the request body
-                waterLevel: 0,              // Assume new plants have not been watered yet
                 group: groupId              // Associate the new plant with the selected group
             });
             console.log('Plant created:', response.data);
