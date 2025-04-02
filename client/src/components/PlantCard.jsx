@@ -47,10 +47,10 @@ function PlantCard({ plant, onDataChange }) {
         const lastWateredDate = new Date(lastWatered);
         const timeDiff = now - lastWateredDate;                 // Difference in milliseconds
 
-        const minsElapsed = Math.floor(timeDiff / (1000 * 60)); // Convert to mins (Date uses ms by default)
+        const minsElapsed = Math.round(timeDiff / (1000 * 60)); // Convert to mins (Date uses ms by default)
         const wateringInterval = waterFrequency * 24 * 60;      // Convert days to minutes
 
-        const level = Math.max(0, 100 - Math.floor((minsElapsed / wateringInterval) * 100)); 
+        const level = Math.max(0, 100 - Math.round((minsElapsed / wateringInterval) * 100)); 
         return level || 0;                                      // Return 0 if NaN or negative
     };
 
@@ -63,11 +63,11 @@ function PlantCard({ plant, onDataChange }) {
         return 'var(--water-low)';
     };
 
-    // Set up an interval to update the water level every 15 minutes
+    // Set up an interval to update the water level every 5 minutes
     useEffect(() => {
         const interval = setInterval(() => {
             setWaterLevel(calculateWaterLevel());
-        }, 15 * 60 * 1000); // 15 minutes in milliseconds
+        }, 5 * 60 * 1000); // 5 minutes in milliseconds
 
         return () => clearInterval(interval);       // Cleanup interval on unmount
     }, [lastWatered, waterFrequency]);              // Recalculate when these change
