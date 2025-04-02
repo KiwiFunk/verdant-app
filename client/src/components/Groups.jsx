@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PlantCard from './PlantCard';
+import PlantCardCompact from './PlantCardCompact';
 
 function Groups({ groups, onAddPlant, onDataChange }) {
     
@@ -8,6 +9,16 @@ function Groups({ groups, onAddPlant, onDataChange }) {
     const [editingId, setEditingId] = useState(null);   
     const [editingName, setEditingName] = useState('');
     const editInputRef = useRef(null);
+
+    //Handling the collapse/expand state of the plant cards
+    const [isCollapsed, setIsCollapsed] = useState(false);  
+
+    const PlantCardComponent = isCollapsed ? PlantCardCompact : PlantCard;
+
+    function toggleCollapse() {
+        setIsCollapsed(!isCollapsed);
+    }
+    
     const API_URL = 'http://localhost:5000/api';
 
 
@@ -88,6 +99,10 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                 </h3>
                             )}
                             <div id="group-controls">
+                                <button className="toggle-view-btn" onClick={toggleCollapse}>
+                                    <i className={`bi bi-${isCollapsed ? 'caret-down-fill' : 'caret-up-fill'}`}></i>
+                                </button>
+
                                 <button className="add-plant-btn" onClick={() => onAddPlant(group._id)}>
                                     <i className="bi bi-plus-square"></i>
                                 </button>

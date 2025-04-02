@@ -157,6 +157,21 @@
   opacity: 1;
 }
 
+.toggle-view-btn {
+  padding: 8px;
+  border: none;
+  background: var(--overlay-light);
+  color: rgba(0, 0, 0, 0.5);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-view-btn:hover {
+  color: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
 .group-content {
   min-height: 200px;
   padding: 1rem;
