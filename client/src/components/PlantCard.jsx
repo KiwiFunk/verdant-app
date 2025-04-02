@@ -50,7 +50,7 @@ function PlantCard({ plant, onDataChange }) {
         const wateringInterval = waterFrequency * 24 * 60;      // Convert days to minutes
 
         const level = Math.max(0, 100 - Math.floor((minsElapsed / wateringInterval) * 100)); 
-        return level;
+        return level || 0;                                      // Return 0 if NaN or negative
     }
 
     const waterLevel = calculateWaterLevel(); 
