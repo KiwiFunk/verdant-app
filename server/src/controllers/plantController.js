@@ -26,10 +26,10 @@ const plantController = {
     // Water the target plant (PATCH Request)
     waterPlant: async (req, res) => {
         try {
-            const { waterLevel, lastWatered } = req.body;
+            const { lastWatered } = req.body;
             const updatedPlant = await Plant.findByIdAndUpdate(
                 req.params.id,
-                { waterLevel, lastWatered },
+                { lastWatered },
                 { new: true }
             );
             
