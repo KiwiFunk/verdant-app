@@ -7,6 +7,7 @@ function PlantCardCompact({ plant, onDataChange }) {
     const {
         _id,                   // MongoDB ID for object
         name,                  // Common name of the plant
+        botanicalName,         // Scientific name of the plant
         waterFrequency,        // Watering frequency in days
         lastWatered,
         baseColor
@@ -44,15 +45,16 @@ function PlantCardCompact({ plant, onDataChange }) {
 
                 <div className='details-pane'>
 
-                    <div className='plant-info'>
-                        <div className='upper-card'>
-                            <h3>{name}</h3>
-                        </div>
-                    </div>
+    
+                    <h4>{name}</h4>
+                    {botanicalName && <h5 className='botanical-name'>{botanicalName}</h5>}
+                    
                 </div>
 
                 <div className="status-bars">
-                    <span className="water-level-text">{waterLevel}%</span>
+                    <div className="water-indicator-wrapper">
+                        <i className="bi bi-droplet-fill"></i><span className="water-level-text">{waterLevel}%</span>
+                    </div>
                 </div>
 
             </div>

@@ -74,7 +74,7 @@ function PlantCard({ plant, onDataChange }) {
 
     // Plant Card
     return (
-        <div className="plant-card" style={{ backgroundColor: baseColor }}>
+        <div className="plant-card card-expanded" style={{ backgroundColor: baseColor }}>
 
             <div className='card-data'>
 
@@ -84,7 +84,7 @@ function PlantCard({ plant, onDataChange }) {
 
                         <div className='upper-card'>
                             <h3>{name}</h3>
-                            {botanicalName && <h4>{botanicalName}</h4>}
+                            {botanicalName && <h4 className='botanical-name'>{botanicalName}</h4>}
                         </div>
 
                         <div className='lower-card'>

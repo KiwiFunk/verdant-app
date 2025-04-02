@@ -6,16 +6,6 @@
   justify-content: center;
 }
 
-#groups-container {
-  width: 88%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-}
-
 .plant-group {
   width: 100%;
   min-width: 600px;
@@ -35,10 +25,6 @@
   font-size: 1.6rem;
   color: var(--font-color);
   margin: 6px 0 0 20px;
-}
-
-.group-components {
-  min-height: 200px;
 }
 
 .groups-container {
@@ -173,7 +159,6 @@
 }
 
 .group-content {
-  min-height: 200px;
   padding: 1rem;
 }
 

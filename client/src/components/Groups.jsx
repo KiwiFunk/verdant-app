@@ -119,10 +119,10 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                     {/* Iterate through each of the groups Plant objects */}
                                     {group.plants.map(plant => (
                                         // Pass the plant as a prop to the PlantCard component
-                                        <PlantCard 
+                                        <PlantCardComponent 
                                             key={plant._id}
                                             plant={plant}
-                                            onDataChange={onDataChange} // Pass the function to refresh data
+                                            onDataChange={onDataChange}
                                         />
                                     ))}
                                 </div>
