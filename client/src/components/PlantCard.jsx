@@ -35,6 +35,7 @@ function PlantCard({ plant, onDataChange }) {
                 lastWatered: new Date()
             });
             onDataChange();
+            setWaterLevel(100);                                 // Set water level to 100% immediately after watering
         } catch (error) {
             console.error('Error watering plant:', error);
         }
@@ -53,7 +54,7 @@ function PlantCard({ plant, onDataChange }) {
         return level || 0;                                      // Return 0 if NaN or negative
     };
 
-    const waterLevel = calculateWaterLevel(); 
+    const [waterLevel, setWaterLevel] = useState(calculateWaterLevel());    // State to hold water level 
 
     // Take level int as input and return a color string based on the level
     const getWaterLevelColor = (level) => {
@@ -61,6 +62,15 @@ function PlantCard({ plant, onDataChange }) {
         if (level > 25) return 'var(--water-med)';
         return 'var(--water-low)';
     };
+
+    // Set up an interval to update the water level every 15 minutes
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setWaterLevel(calculateWaterLevel());
+        }, 15 * 60 * 1000); // 15 minutes in milliseconds
+
+        return () => clearInterval(interval);       // Cleanup interval on unmount
+    }, [lastWatered, waterFrequency]);              // Recalculate when these change
 
     // Plant Card
     return (
