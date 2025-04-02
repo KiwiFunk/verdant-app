@@ -63,11 +63,11 @@ function PlantCard({ plant, onDataChange }) {
         return 'var(--water-low)';
     };
 
-    // Set up an interval to update the water level every 5 minutes
+    // Set up an interval to update the water level every 15 minutes
     useEffect(() => {
         const interval = setInterval(() => {
             setWaterLevel(calculateWaterLevel());
-        }, 5 * 60 * 1000); // 5 minutes in milliseconds
+        }, 15 * 60 * 1000); // 15 minutes in milliseconds
 
         return () => clearInterval(interval);       // Cleanup interval on unmount
     }, [lastWatered, waterFrequency]);              // Recalculate when these change
