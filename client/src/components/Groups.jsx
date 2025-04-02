@@ -9,15 +9,6 @@ function Groups({ groups, onAddPlant, onDataChange }) {
     const [editingId, setEditingId] = useState(null);   
     const [editingName, setEditingName] = useState('');
     const editInputRef = useRef(null);
-
-    //Handling the collapse/expand state of the plant cards
-    const [isCollapsed, setIsCollapsed] = useState(false);  
-
-    const PlantCardComponent = isCollapsed ? PlantCardCompact : PlantCard;
-
-    function toggleCollapse() {
-        setIsCollapsed(!isCollapsed);
-    }
     
     const API_URL = 'http://localhost:5000/api';
 
@@ -44,7 +35,6 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         }
     };
 
-
     // DELETE request to remove a group (Plants are also deleted server-side)
     const deleteGroup = async (groupId) => {
         try {
@@ -52,6 +42,18 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             onDataChange();                                         // Refresh groups     
         } catch (error) {
             console.error('Error deleting group:', error);
+        }
+    };
+
+    // update isCollapsed state of the group (PATCH)
+    const toggleCollapse = async (groupId, currentState) => {
+        try {
+            await axios.patch(`${API_URL}/groups/${groupId}`, {
+                isCollapsed: !currentState
+            });
+            onDataChange();
+        } catch (error) {
+            console.error('Error toggling group:', error);
         }
     };
 
@@ -99,8 +101,8 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                 </h3>
                             )}
                             <div id="group-controls">
-                                <button className="toggle-view-btn" onClick={toggleCollapse}>
-                                    <i className={`bi bi-${isCollapsed ? 'caret-down-fill' : 'caret-up-fill'}`}></i>
+                                <button className="toggle-view-btn"onClick={() => toggleCollapse(group._id, group.isCollapsed)}>
+                                    <i className={`bi bi-${group.isCollapsed ? 'caret-down-fill' : 'caret-up-fill'}`}></i>
                                 </button>
 
                                 <button className="add-plant-btn" onClick={() => onAddPlant(group._id)}>
@@ -119,11 +121,19 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                     {/* Iterate through each of the groups Plant objects */}
                                     {group.plants.map(plant => (
                                         // Pass the plant as a prop to the PlantCard component
-                                        <PlantCardComponent 
-                                            key={plant._id}
-                                            plant={plant}
-                                            onDataChange={onDataChange}
-                                        />
+                                        group.isCollapsed ? (
+                                            <PlantCardCompact
+                                                key={plant._id}
+                                                plant={plant}
+                                                onDataChange={onDataChange}
+                                            />
+                                        ) : (
+                                            <PlantCard
+                                                key={plant._id}
+                                                plant={plant}
+                                                onDataChange={onDataChange}
+                                            />
+                                        )
                                     ))}
                                 </div>
                             ) : (

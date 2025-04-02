@@ -31,7 +31,7 @@ const groupController = {
         try {
             const updatedGroup = await Group.findByIdAndUpdate(
                 req.params.id,
-                { name: req.body.name },
+                req.body,
                 { new: true }
             );
             res.json(updatedGroup);
