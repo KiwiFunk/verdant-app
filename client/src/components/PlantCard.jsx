@@ -9,6 +9,7 @@ function PlantCard({ plant, onDataChange }) {
         name,                  // Common name of the plant
         botanicalName,         // Scientific name of the plant
         notes,
+        waterFrequency,        // Watering frequency in days
         lastWatered,
         harvestMonths,
         baseColor
@@ -31,7 +32,6 @@ function PlantCard({ plant, onDataChange }) {
     const handleWater = async () => {
         try {
             await axios.patch(`${API_URL}/water/${_id}`, {
-                waterLevel: 100,
                 lastWatered: new Date()
             });
             onDataChange();
@@ -44,7 +44,16 @@ function PlantCard({ plant, onDataChange }) {
     const calculateWaterLevel = () => {
         const now = new Date();
         const lastWateredDate = new Date(lastWatered);
+        const timeDiff = now - lastWateredDate;                 // Difference in milliseconds
+
+        const minsElapsed = Math.floor(timeDiff / (1000 * 60)); // Convert to mins (Date uses ms by default)
+        const wateringInterval = waterFrequency * 24 * 60;      // Convert days to minutes
+
+        const level = Math.max(0, 100 - Math.floor((minsElapsed / wateringInterval) * 100)); 
+        return level;
     }
+
+    const waterLevel = calculateWaterLevel(); 
         
 
     // Take level int as input and return a color string based on the level
