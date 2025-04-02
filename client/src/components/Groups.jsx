@@ -62,8 +62,8 @@ function Groups({ groups, onAddPlant, onDataChange }) {
     return (
         <div className="groups-container">
             <div className="groups-header">
-                <h2>My Plant Groups</h2>
                 <button className="add-group-btn" onClick={createGroup}>
+                    New Group
                     <i className="bi bi-plus-lg"></i>
                 </button>
             </div>

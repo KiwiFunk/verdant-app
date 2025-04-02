@@ -41,27 +41,6 @@
   min-height: 200px;
 }
 
-.create-group {
-  background-color: transparent;
-  border: 2px solid var(--font-color);
-  font-size: 1.6rem;
-  color: var(--font-color);
-}
-
-.create-group p {
-  align-self: center;
-  font-size: 0.9em;
-}
-
-.create-group i {
-  font-size: 2em;
-  align-self: center;
-}
-
-.create-group:hover {
-  cursor: pointer;
-}
-
 .groups-container {
   width: 100%;
   max-width: 1200px;
@@ -71,30 +50,30 @@
 
 .groups-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-bottom: 2rem;
-}
-
-.groups-header h2 {
-  font-size: 1.8rem;
-  color: var(--font-color);
-  font-weight: 600;
+  margin-bottom: var(--spacing-md);
 }
 
 .add-group-btn {
   background: var(--primary-color);
+  padding: 10px 20px;
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.2rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease;
+}
+
+.groups-header i {
+  padding-left: 4px;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .add-group-btn:hover {
@@ -109,7 +88,7 @@
 
 .group-card {
   background: white;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -202,4 +181,58 @@
   flex-flow: row wrap;
   justify-content: flex-start;
   gap: var(--spacing-md);
+}
+
+/* Header Styling */
+header {
+  width: 100%;
+  max-width: 1400px;
+  margin: 20px auto;
+
+  border-radius: var(--border-radius);
+  border: 1px solid #000000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.branding {
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 5px 15px;
+  border-radius: var(--border-radius) 0 0 var(--border-radius); 
+
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.branding i {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.bar-fill {
+  flex-grow: 2;
+  flex-basis: auto;
+  width: 400px;
+  height: 10px;
+}
+
+.user-controls {
+  margin-right: 0.5rem;
+  height: 3.8rem;
+  width: 3.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-controls i {
+  font-size: 2.2rem;
+  color: #000000;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Groups from './components/Groups'
+import Header from './components/Header'
 import CreatePlantModal from './components/CreatePlantModal'
 import LoadingOverlay from './components/LoadingOverlay'
 import './App.css'
@@ -61,6 +62,7 @@ function App() {
   return (
     <div id="app-container">
 
+      <Header />
       <Groups 
         groups={appData}
         onAddPlant={handleOpenModal}
