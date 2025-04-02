@@ -109,13 +109,16 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                     <i className="bi bi-three-dots-vertical"></i>
                                 </span>
 
-                                <button className="add-plant-btn" onClick={() => onAddPlant(group._id)}>
-                                    <i className="bi bi-plus-square"></i>
-                                </button>
-
-                                <button className="delete-group-btn" onClick={() => deleteGroup(group._id)}>
-                                    <i className="bi bi-trash3"></i>
-                                </button>
+                                <div className="group-settings-dropdown">
+                                    <span className="group-settings-item" onClick={() => onAddPlant(group._id)}>
+                                        <i className="bi bi-plus-square"></i>
+                                        Add Plant
+                                    </span>
+                                    <span className="group-settings-item" onClick={() => deleteGroup(group._id)}>
+                                        <i className="bi bi-trash3"></i>
+                                        Delete Group
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
