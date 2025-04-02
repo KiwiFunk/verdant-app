@@ -2,7 +2,7 @@ function Header() {
     return (
         <header>
             <div className='branding'>
-                <i class="bi bi-flower3"></i>
+                <i className="bi bi-flower3"></i>
                 <h1>Verdant</h1>
             </div>
             <div className='bar-fill'></div>
