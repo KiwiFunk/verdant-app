@@ -89,14 +89,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   border-bottom: 1px solid #eee;
+  letter-spacing: 0.5px;
 }
 
 .group-header h3 {
   margin: 0;
   font-size: 1.2rem;
-  color: var(--font-color);
+  color: var(--font-color-light);
   cursor: pointer;
 }
 
