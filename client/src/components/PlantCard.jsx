@@ -51,16 +51,15 @@ function PlantCard({ plant, onDataChange }) {
 
         const level = Math.max(0, 100 - Math.floor((minsElapsed / wateringInterval) * 100)); 
         return level || 0;                                      // Return 0 if NaN or negative
-    }
+    };
 
     const waterLevel = calculateWaterLevel(); 
-        
 
     // Take level int as input and return a color string based on the level
     const getWaterLevelColor = (level) => {
-        if (level > 50) return '#27b0ff';
-        if (level > 25) return '#ffaa44';
-        return '#ff4444';
+        if (level > 50) return 'var(--water-high)';
+        if (level > 25) return 'var(--water-med)';
+        return 'var(--water-low)';
     };
 
     // Plant Card
