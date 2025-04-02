@@ -244,11 +244,14 @@ header {
 
 .group-settings-item {
   display: flex;
+  font-size: 0.95rem;
+  letter-spacing: normal;
   align-items: center;
   padding: 0.65rem 0.85rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
+
 .group-settings-item:hover {
   background-color: var(--overlay-dark);
 }
