@@ -95,7 +95,7 @@
 }
 
 .group-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -190,7 +190,7 @@ header {
   margin: 20px auto;
 
   border-radius: var(--border-radius);
-  border: 1px solid #000000;
+  border: 1px solid var(--primary-color);
   
   display: flex;
   align-items: center;
@@ -198,7 +198,7 @@ header {
 }
 
 .branding {
-  background-color: #000000;
+  background-color: var(--primary-color);
   color: #ffffff;
   font-size: 1rem;
   padding: 5px 15px;
@@ -234,5 +234,5 @@ header {
 
 .user-controls i {
   font-size: 2.2rem;
-  color: #000000;
+  color: var(--primary-color);
 }

@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #007bff;
+  --primary-color: #87976d;
   --secondary-color: #6c757d;
   --accent-color: #17a2b8;
   --background-color: #eeeeee;
@@ -23,8 +23,9 @@
   
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.3);
   
-  --transition-speed: 0.2s;
+  --transition-speed: 0.3s;
 
   --red: #ff4444;
   --orange: #FF7635;
