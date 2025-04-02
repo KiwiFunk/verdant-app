@@ -25,6 +25,14 @@
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.4);
   
   --transition-speed: 0.2s;
+
+  --red: #ff4444;
+  --orange: #FF7635;
+  --yellow: #F4D03F;
+  --green: #7f9261;
+  --blue: #44aaff;
+  --purple: #aa44ff;
+
 }
 
 * {

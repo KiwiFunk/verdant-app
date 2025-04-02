@@ -117,12 +117,12 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
 
                     <div className="form-group color-selector">
                         {Object.entries({
-                            Red: "#ff4444",
-                            Orange: "#FF7635",
-                            Yellow: "#ffdd44",
-                            Green: "#7f9261",
-                            Blue: "#44aaff",
-                            Purple: "#aa44ff"
+                            Red: "var(--red)",
+                            Orange: "var(--orange)",
+                            Yellow: "var(--yellow)",
+                            Green: "var(--green)",
+                            Blue: "var(--blue)",
+                            Purple: "var(--purple)"
                         }).map(([color, hex]) => (
                             <label key={color} className="color-toggle">
                                 <input
