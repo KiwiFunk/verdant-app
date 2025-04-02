@@ -145,7 +145,7 @@
 }
 
 .toggle-view-btn {
-  padding: 8px;
+  padding: 2px;
   border: none;
   background: var(--overlay-light);
   color: rgba(0, 0, 0, 0.5);
@@ -157,6 +157,17 @@
 .toggle-view-btn:hover {
   color: rgba(0, 0, 0, 0.9);
   transform: scale(1.1);
+}
+
+.group-setings-menu {
+  padding: 2px;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.group-setings-menu:hover {
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .group-content {
@@ -237,3 +248,6 @@ header {
   font-size: 2.2rem;
   color: var(--primary-color);
 }
+
+/* Group Settings */
+

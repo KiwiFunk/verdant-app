@@ -101,9 +101,13 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                 </h3>
                             )}
                             <div id="group-controls">
-                                <button className="toggle-view-btn"onClick={() => toggleCollapse(group._id, group.isCollapsed)}>
+                                <button className="toggle-view-btn" onClick={() => toggleCollapse(group._id, group.isCollapsed)}>
                                     <i className={`bi bi-${group.isCollapsed ? 'caret-down-fill' : 'caret-up-fill'}`}></i>
                                 </button>
+
+                                <span className="group-setings-menu">
+                                    <i className="bi bi-three-dots-vertical"></i>
+                                </span>
 
                                 <button className="add-plant-btn" onClick={() => onAddPlant(group._id)}>
                                     <i className="bi bi-plus-square"></i>
