@@ -72,6 +72,20 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         }
     };
 
+    //Handle group settings menu toggle
+    const [activeMenu, setActiveMenu] = useState(null);
+
+    const toggleSettingsMenu = (groupId, e) => {
+        e.stopPropagation();                                                        // Prevent event bubbling
+        setActiveMenu(activeMenu === groupId ? null : groupId);
+    };
+    
+    useEffect(() => {
+        const handleClickOutside = () => setActiveMenu(null);                       // If click outside menu, set activeMenu to null
+        document.addEventListener('click', handleClickOutside);                     // Create event listener for clicks outside the menu
+        return () => document.removeEventListener('click', handleClickOutside);     // Cleanup event listener
+    }, []);
+
     return (
         <div className="groups-container">
             <div className="groups-header">
@@ -84,6 +98,8 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             <div className="groups-grid">
                 {groups.map(group => (
                     <div key={group._id} className="group-card">
+
+                        {/* Group header with name and controls */}
                         <div className="group-header">
                             {editingId === group._id ? (
                                 <input
@@ -100,28 +116,34 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                     {group.name}
                                 </h3>
                             )}
+                            {/* Group controls */}
                             <div id="group-controls">
                                 <button className="toggle-view-btn" onClick={() => toggleCollapse(group._id, group.isCollapsed)}>
                                     <i className={`bi bi-${group.isCollapsed ? 'caret-down-fill' : 'caret-up-fill'}`}></i>
                                 </button>
 
-                                <span className="group-setings-menu">
+                                <span className="group-settings-menu" onClick={(e) => toggleSettingsMenu(group._id, e)}>
                                     <i className="bi bi-three-dots-vertical"></i>
                                 </span>
 
-                                <div className="group-settings-dropdown">
-                                    <span className="group-settings-item" onClick={() => onAddPlant(group._id)}>
-                                        <i className="bi bi-plus-square"></i>
-                                        Add Plant
-                                    </span>
-                                    <span className="group-settings-item" onClick={() => deleteGroup(group._id)}>
-                                        <i className="bi bi-trash3"></i>
-                                        Delete Group
-                                    </span>
-                                </div>
+                                {/* If activeMenu is equal to the group ID, show the dropdown */}
+                                {activeMenu === group._id && (
+                                    <div className="group-settings-dropdown">
+                                        <span className="group-settings-item" onClick={() => onAddPlant(group._id)}>
+                                            <i className="bi bi-plus-square"></i>
+                                            <p>Add Plant</p>
+                                        </span>
+                                        <span className="group-settings-item" onClick={() => deleteGroup(group._id)}>
+                                            <i className="bi bi-trash3"></i>
+                                            <p>Delete Group</p>
+                                        </span>
+                                    </div>
+                                )}
+
                             </div>
                         </div>
 
+                        {/* Group body */}
                         <div className="group-content">
                             {group.plants?.length ? (
                                 <div className="plant-card-container">
@@ -150,6 +172,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                 </div>
                             )}
                         </div>
+
                     </div>
                 ))}
             </div>

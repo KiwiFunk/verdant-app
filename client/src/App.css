@@ -224,17 +224,25 @@ header {
 
 /* Group Settings */
 
+#group-controls {
+  position: relative; 
+}
+
+.group-settings-menu {
+  cursor: pointer;
+}
+
 .group-settings-dropdown {
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: 30px;           
+  right: -5px;           
   background-color: white;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-md);
   z-index: 1000;
 
   display: flex;
-  flex-direction: column;
+  flex-flow: column nowrap;
   gap: var(--spacing-sm);
 }
 
@@ -244,10 +252,12 @@ header {
 
 .group-settings-item {
   display: flex;
+  flex-flow: row nowrap;
+  white-space: nowrap;
   font-size: 0.95rem;
   letter-spacing: normal;
   align-items: center;
-  padding: 0.65rem 0.85rem;
+  padding: 0.65rem 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
