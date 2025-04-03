@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import './CreatePlantModal.css';
 
-function CreatePlantModal({ groupId, groups, isOpen, onClose }) {
+function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
     // State to hold form data for new plant
     const [formData, setFormData] = useState({
         name: '',
@@ -13,6 +13,26 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose }) {
         baseColor: '#2c5530',
         group: groupId || groups[0]?._id        // If null, init with first group ID
     });
+
+    let isEditMode = false;         // Flag to check if in edit mode
+
+    // If called as edit, pre-fill the form with plant data
+    if (plantID) {
+        // Fetch plant data to pre-fill the form
+        setFormData({
+            ...formData,
+            name: plantID.name,
+            botanicalName: plantID.botanicalName,
+            notes: plantID.notes,
+            waterFrequency: plantID.waterFrequency,
+            harvestMonths: plantID.harvestMonths,
+            baseColor: plantID.baseColor,
+            group: plantID.group._id
+        });
+        isEditMode = true;             // Set edit mode flag
+    }
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -46,7 +66,7 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose }) {
         <div className="modal-overlay">
             <div className="modal-content">
                 <div className="modal-header">
-                    <h2>Add New Plant</h2>
+                    { isEditMode ? <h2>Add New Plant</h2> : <h2>header-main</h2> }
                     <button className="close-btn" onClick={() => onClose(null)}>
                         <i className="bi bi-x-lg"></i>
                     </button>
