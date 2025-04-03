@@ -11,7 +11,7 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
 
     // Initialize form data
     const [formData, setFormData] = useState(
-        plantToEdit ? {
+        plantToEdit ? {                                         // If in edit mode, populate form with existing plant data 
             name: plantToEdit.name,
             botanicalName: plantToEdit.botanicalName || '',
             notes: plantToEdit.notes || '',
@@ -19,14 +19,14 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
             harvestMonths: plantToEdit.harvestMonths || [],
             baseColor: plantToEdit.baseColor,
             group: plantToEdit.group._id
-        } : {
+        } : {                                                   // Default values for new plant 
             name: '',
             botanicalName: '',
             notes: '',
             waterFrequency: 7,
             harvestMonths: [],
-            baseColor: '#2c5530',
-            group: groupId || groups[0]?._id
+            baseColor: 'var(--green)',                          // Default color
+            group: groupId || groups[0]?._id                    // Default to the first group if no groupId is provided
         }
     );
 
@@ -48,7 +48,7 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
         } else if (isEditMode) {                                // If in edit mode, PATCH request to update the plant
             try {
                 const response = await axios.patch(`${API_URL}/${plantToEdit._id}`, {
-                    ...formData,                                // Spread the form data into the request body
+                    ...formData,                                
                 });
                 console.log('Plant updated:', response.data);
                 onClose(response.data)
@@ -198,11 +198,7 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
                                     checked={formData.baseColor === hex}
                                     onChange={(e) => setFormData({...formData, baseColor: e.target.value})}
                                 />
-                                <span 
-                                    className="color-label" 
-                                    style={{ backgroundColor: hex }}
-                                >
-                                </span>
+                                <span className="color-label" style={{ backgroundColor: hex }}></span>
                             </label>
                         ))}
                     </div>
