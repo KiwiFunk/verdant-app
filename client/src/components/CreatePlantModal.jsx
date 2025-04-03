@@ -2,37 +2,33 @@ import { useState } from 'react';
 import axios from 'axios';
 import './CreatePlantModal.css';
 
-function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
+function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
 
     const API_URL = 'http://localhost:5000/api/plants'; // Base URL for API requests
 
     // Check if the modal is in edit mode based on the presence of plantID
-    const isEditMode = Boolean(plantID); 
+    const isEditMode = Boolean(plantToEdit); 
 
-    // State to hold form data for new plant
-    const [formData, setFormData] = useState({
-        name: '',
-        botanicalName: '',
-        notes: '',
-        waterFrequency: 7,           // Default to weekly watering
-        harvestMonths: [],
-        baseColor: '#2c5530',
-        group: groupId || groups[0]?._id        // If null, init with first group ID
-    });
-
-    // If called as edit, pre-fill the form with plant data
-    if (isEditMode) {
-        setFormData({
-            ...formData,
-            name: plantID.name,
-            botanicalName: plantID.botanicalName,
-            notes: plantID.notes,
-            waterFrequency: plantID.waterFrequency,
-            harvestMonths: plantID.harvestMonths,
-            baseColor: plantID.baseColor,
-            group: plantID.group._id
-        });
-    }
+    // Initialize form data
+    const [formData, setFormData] = useState(
+        plantToEdit ? {
+            name: plantToEdit.name,
+            botanicalName: plantToEdit.botanicalName || '',
+            notes: plantToEdit.notes || '',
+            waterFrequency: plantToEdit.waterFrequency,
+            harvestMonths: plantToEdit.harvestMonths || [],
+            baseColor: plantToEdit.baseColor,
+            group: plantToEdit.group._id
+        } : {
+            name: '',
+            botanicalName: '',
+            notes: '',
+            waterFrequency: 7,
+            harvestMonths: [],
+            baseColor: '#2c5530',
+            group: groupId || groups[0]?._id
+        }
+    );
 
     const handleSubmit = async (e) => {                         // Handle form submission states
         e.preventDefault();                                     // Prevent default form submission behaviour
