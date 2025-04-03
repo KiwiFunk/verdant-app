@@ -3,6 +3,9 @@ import axios from 'axios';
 import './CreatePlantModal.css';
 
 function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
+
+    const API_URL = 'http://localhost:5000/api/plants'; // Base URL for API requests
+
     // State to hold form data for new plant
     const [formData, setFormData] = useState({
         name: '',
@@ -18,7 +21,6 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
 
     // If called as edit, pre-fill the form with plant data
     if (plantID) {
-        // Fetch plant data to pre-fill the form
         setFormData({
             ...formData,
             name: plantID.name,
@@ -32,19 +34,34 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
         isEditMode = true;             // Set edit mode flag
     }
 
+    const handleSubmit = async (e) => {                         // Handle form submission states
+        e.preventDefault();                                     // Prevent default form submission behaviour
 
+        if (!isEditMode) {                                      // If not in edit mode, POST request to create a new plant
+            try {
+                const response = await axios.post(API_URL, {
+                    ...formData,                                // Spread the form data into the request body
+                    group: groupId || formData.group            // If no group is provided, use the one from formData
+                });
+                console.log('Plant created:', response.data);
+                onClose(response.data);                         // Pass the new plant back to parent
+            } catch (error) {
+                console.error('Error creating plant:', error);
+            }
+            
+        } else if (isEditMode) {                                // If in edit mode, PATCH request to update the plant
+            try {
+                const response = await axios.patch(`${API_URL}/${plantID._id}`, {
+                    ...formData,                                // Spread the form data into the request body
+                });
+                console.log('Plant updated:', response.data);
+                onClose(response.data)
+            } catch (error) {
+                console.error('Error updating plant:', error);
+            }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5000/api/plants', {
-                ...formData,                            // Spread the form data into the request body
-                group: groupId || formData.group        // If no group is provided, use the one from formData
-            });
-            console.log('Plant created:', response.data);
-            onClose(response.data);                     // Pass the new plant back to parent
-        } catch (error) {
-            console.error('Error creating plant:', error);
+        } else {                                                // If neither, log an error
+            console.error('Something went wrong!');
         }
     };
 
@@ -185,6 +202,9 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
                         ))}
                     </div>
 
+                    {/* Handle form submssion depending on create/edit mode */}
+
+                    {!isEditMode ? (
                     <div className="modal-footer">
                         <button type="button" className="btn cancel-btn" onClick={() => onClose(null)}>
                             Cancel
@@ -193,6 +213,17 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
                             Add Plant
                         </button>
                     </div>
+                    ) : (
+                    <div className="modal-footer">
+                        <button type="button" className="btn cancel-btn" onClick={() => onClose(null)}>
+                            Cancel
+                        </button>
+                        <button type="submit" className="btn submit-btn">
+                            Save Changes
+                        </button>
+                    </div>
+                    )}
+
                 </form>
             </div>
         </div>
