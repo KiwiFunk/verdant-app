@@ -90,8 +90,13 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         <div className="groups-container">
             <div className="groups-header">
                 <button className="add-group-btn" onClick={createGroup}>
-                    New Group
-                    <i className="bi bi-plus-lg"></i>
+                    Create Group
+                    <i className="bi bi-plus-square"></i>
+                </button>
+
+                <button className="add-group-btn" onClick={() => onAddPlant(null)}>
+                    New Plant
+                    <i className="bi bi-plus-square"></i>
                 </button>
             </div>
 
