@@ -2,8 +2,9 @@
 .plant-card {
     border-radius: var(--border-radius);
     padding: var(--spacing-sm) var(--spacing-md);
-    width: 100%;
-    max-width: 315px;
+    min-width: 300px;
+    max-width: 350px;
+    flex: 1 1 300px; /* flex-grow: 1, flex-shrink: 1, flex-basis: 300px */
     box-shadow: var(--shadow-md);
     color: white;
     transition: all var(--transition-speed) ease;
