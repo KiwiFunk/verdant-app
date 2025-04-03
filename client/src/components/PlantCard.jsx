@@ -114,7 +114,7 @@ function PlantCard({ plant, onDataChange, onEditPlant }) {
                             
                         <button 
                             className="btn edit-button"
-                            onClick={() => onEditPlant(_id)}
+                            onClick={() => onEditPlant(null, plant)} // Pass null for groupId, and plant for editing
                             aria-label="Edit plant"
                         >
                             <i className="bi bi-gear"></i>
