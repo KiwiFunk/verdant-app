@@ -6,6 +6,9 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
 
     const API_URL = 'http://localhost:5000/api/plants'; // Base URL for API requests
 
+    // Check if the modal is in edit mode based on the presence of plantID
+    const isEditMode = Boolean(plantID); 
+
     // State to hold form data for new plant
     const [formData, setFormData] = useState({
         name: '',
@@ -17,10 +20,8 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
         group: groupId || groups[0]?._id        // If null, init with first group ID
     });
 
-    let isEditMode = false;         // Flag to check if in edit mode
-
     // If called as edit, pre-fill the form with plant data
-    if (plantID != null) {
+    if (isEditMode) {
         setFormData({
             ...formData,
             name: plantID.name,
@@ -31,7 +32,6 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
             baseColor: plantID.baseColor,
             group: plantID.group._id
         });
-        isEditMode = true;             // Set edit mode flag
     }
 
     const handleSubmit = async (e) => {                         // Handle form submission states
@@ -69,7 +69,7 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
     const deletePlant = async (plantId) => {
         try {
             await axios.delete(`${API_URL}/${plantId}`);    // Send DELETE request to server
-            onDataChange();                                 // Refresh app data after deletion
+            onClose(null);                                  // Refresh app data after deletion
         } catch (error) {
             console.error('Error deleting plant:', error);
         }
