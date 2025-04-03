@@ -38,6 +38,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 12px;
   margin-bottom: var(--spacing-md);
 }
 
@@ -57,13 +58,13 @@
 }
 
 .groups-header i {
-  padding-left: 4px;
+  padding-right: 5px;
   font-size: 1.2rem;
   font-weight: 600;
 }
 
 .add-group-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .groups-grid {
