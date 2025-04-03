@@ -29,7 +29,7 @@
 
 .groups-container {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -172,7 +172,7 @@
 /* Header Styling */
 header {
   width: 96%;
-  max-width: 1400px;
+  max-width: var(--max-width);
   margin: 20px 15px;
   display: flex;
   align-items: center;

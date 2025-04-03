@@ -35,6 +35,8 @@
   --blue: #44aaff;
   --purple: #aa44ff;
 
+  --max-width: 1200px;
+
 }
 
 * {
