@@ -20,7 +20,7 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
     let isEditMode = false;         // Flag to check if in edit mode
 
     // If called as edit, pre-fill the form with plant data
-    if (plantID) {
+    if (plantID != null) {
         setFormData({
             ...formData,
             name: plantID.name,
