@@ -11,7 +11,7 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose }) {
         waterFrequency: 7,           // Default to weekly watering
         harvestMonths: [],
         baseColor: '#2c5530',
-        group: groupId || ''        // If null, init with empty string
+        group: groupId || groups[0]?._id        // If null, init with first group ID
     });
 
     const handleSubmit = async (e) => {
