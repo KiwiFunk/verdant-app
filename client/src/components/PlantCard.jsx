@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'; // Removed unused useRef
 import axios from 'axios';
 import './PlantCard.css';
 
-function PlantCard({ plant, onDataChange }) {
+function PlantCard({ plant, onDataChange, onEditPlant }) {
     // Destructure the plant object from the prop to get the data from the fields
     const {
         _id,                   // MongoDB ID for object
@@ -17,16 +17,6 @@ function PlantCard({ plant, onDataChange }) {
 
     // HTTP Request functions
     const API_URL = 'http://localhost:5000/api/plants';
-
-    // Delete target plant object (DELETE)
-    const deletePlant = async (plantId) => {
-        try {
-            await axios.delete(`${API_URL}/${plantId}`);    // Send DELETE request to server
-            onDataChange();                                 // Refresh app data after deletion
-        } catch (error) {
-            console.error('Error deleting plant:', error);
-        }
-    };
 
     // Use PATCH request to water the plant (reset water level to 100, update last watered date)
     const handleWater = async () => {
@@ -124,10 +114,10 @@ function PlantCard({ plant, onDataChange }) {
                             
                         <button 
                             className="btn delete-button"
-                            onClick={() => deletePlant(_id)}
-                            aria-label="Delete plant"
+                            onClick={() => onEditPlant(_id)}
+                            aria-label="Edit plant"
                         >
-                            <i className="bi bi-trash"></i>
+                            <i className="bi bi-gear"></i>
                         </button>
                     </div>
 

@@ -166,6 +166,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                                                 key={plant._id}
                                                 plant={plant}
                                                 onDataChange={onDataChange}
+                                                onEditPlant={onAddPlant}
                                             />
                                         )
                                     ))}
