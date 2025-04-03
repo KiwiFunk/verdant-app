@@ -44,6 +44,26 @@ const plantController = {
         }
     },
 
+    // Update plant object (PATCH Request)
+    updatePlant: async (req, res) => {
+        try {
+            const updatedPlant = await Plant.findByIdAndUpdate(
+                req.params.id,
+                req.body,
+                { new: true }
+            );
+            
+            if (!updatedPlant) {
+                return res.status(404).json({ message: 'Plant not found' });
+            }
+            
+            res.status(200).json(updatedPlant);
+        } catch (error) {
+            console.error('Error updating plant:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
     // Delete specified plant object (DELETE Request)
     deletePlant: async (req, res) => {
         try {
