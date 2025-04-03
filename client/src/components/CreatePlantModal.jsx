@@ -66,7 +66,7 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
         <div className="modal-overlay">
             <div className="modal-content">
                 <div className="modal-header">
-                    { isEditMode ? <h2>Add New Plant</h2> : <h2>header-main</h2> }
+                    { isEditMode ? <h2>Edit Plant</h2> : <h2>Add New Plant</h2> }
                     <button className="close-btn" onClick={() => onClose(null)}>
                         <i className="bi bi-x-lg"></i>
                     </button>
