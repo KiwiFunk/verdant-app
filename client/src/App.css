@@ -171,12 +171,13 @@
 
 /* Header Styling */
 header {
-  width: 100%;
+  width: 96%;
   max-width: 1400px;
-  margin: 20px auto;
+  margin: 20px 15px;
 
-  border-radius: var(--border-radius);
-  border: 1px solid var(--primary-color);
+  background-color: white;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
   
   display: flex;
   align-items: center;
@@ -184,12 +185,9 @@ header {
 }
 
 .branding {
-  background-color: var(--primary-color);
-  color: #ffffff;
+  color: var(--font-color);
   font-size: 1rem;
   padding: 5px 15px;
-  border-radius: var(--border-radius) 0 0 var(--border-radius); 
-
 
   display: flex;
   align-items: center;
@@ -199,7 +197,6 @@ header {
 .branding i {
   font-size: 2rem;
   margin-right: 0.5rem;
-  margin-left: 0.5rem;
 }
 
 .bar-fill {
@@ -210,7 +207,8 @@ header {
 }
 
 .user-controls {
-  margin-right: 0.5rem;
+  border-radius: var(--border-radius-sm); 
+  margin-right: 10px;
   height: 3.8rem;
   width: 3.8rem;
   display: flex;
@@ -220,7 +218,7 @@ header {
 
 .user-controls i {
   font-size: 2.2rem;
-  color: var(--primary-color);
+  color: var(--font-color);
 }
 
 /* Group Settings */
