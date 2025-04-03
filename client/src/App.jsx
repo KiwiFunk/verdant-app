@@ -14,9 +14,11 @@ function App() {
   const [error, setError] = useState(null);
 
   // Manage states for modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [groupId, setGroupId] = useState(null);
-  const [shouldRefresh, setShouldRefresh] = useState(false);
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    groupId: null,
+    plantToEdit: null
+});
 
   // Fetch all application data (Groups and their plants) ((GET))
   const fetchAppData = async () => {
@@ -34,18 +36,24 @@ function App() {
   };
 
   // Functions for handling modal state
-  const handleOpenModal = (id) => {
-    setGroupId(id);
-    setIsModalOpen(true);
-  }
+  const handleOpenModal = (groupId = null, plantToEdit = null) => {
+    setModalData({
+      isOpen: true,
+      groupId,
+      plantToEdit
+    });
+  };
 
-  const handleCloseModal = async (newPlant) => {
-    if (newPlant) {
-      await fetchAppData(); // Trigger groups refresh when plant is created
+  const handleCloseModal = async (shouldRefresh = false) => {
+    if (shouldRefresh) {
+        await fetchAppData();
     }
-    setGroupId(null);
-    setIsModalOpen(false);
-  }
+    setModalData({
+        isOpen: false,
+        groupId: null,
+        plantToEdit: null
+    });
+};
 
   //UseEffect hook to fetch data when the component mounts
   useEffect(() => {
