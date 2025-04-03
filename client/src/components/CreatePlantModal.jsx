@@ -171,6 +171,7 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
                                         type="checkbox"
                                         value={month}
                                         className="month-checkbox"
+                                        checked={formData.harvestMonths.includes(month)}
                                         onChange={handleMonthChange}
                                     />
                                     <span className="month-label">{month.toUpperCase()}</span>
