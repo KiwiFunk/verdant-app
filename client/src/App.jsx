@@ -73,6 +73,7 @@ function App() {
       {isModalOpen && (
         <CreatePlantModal
           groupId={groupId}
+          groups={appData}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
         />

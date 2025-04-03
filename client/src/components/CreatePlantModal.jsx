@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import './CreatePlantModal.css';
 
-function CreatePlantModal({ groupId, isOpen, onClose }) {
+function CreatePlantModal({ groupId, groups, isOpen, onClose }) {
     // State to hold form data for new plant
     const [formData, setFormData] = useState({
         name: '',
