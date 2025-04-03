@@ -47,7 +47,7 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
 
         } else if (isEditMode) {                                // If in edit mode, PATCH request to update the plant
             try {
-                const response = await axios.patch(`${API_URL}/${plantID._id}`, {
+                const response = await axios.patch(`${API_URL}/${plantToEdit._id}`, {
                     ...formData,                                // Spread the form data into the request body
                 });
                 console.log('Plant updated:', response.data);
@@ -70,8 +70,6 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
             console.error('Error deleting plant:', error);
         }
     };
-
-    if (!isOpen) return null;
 
     // Month selection logic
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -125,7 +123,7 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
                         />
                     </div>
 
-                    {groupId === null && (
+                    {groupId === null && !isEditMode && (
                     <div className="form-group">
                         <label>Plant Group</label>
                         <select
@@ -221,18 +219,18 @@ function CreatePlantModal({ groupId, plantToEdit, groups, onClose }) {
                     </div>
                     ) : (
                     <div className="modal-footer">
+                        <button 
+                            className="btn delete-button"
+                            onClick={() => deletePlant(plantToEdit._id)}
+                            aria-label="Delete plant"
+                        >
+                            <i className="bi bi-trash"></i>
+                        </button>
                         <button type="button" className="btn cancel-btn" onClick={() => onClose(null)}>
                             Cancel
                         </button>
                         <button type="submit" className="btn submit-btn">
                             Save Changes
-                        </button>
-                        <button 
-                            className="btn delete-button"
-                            onClick={() => deletePlant(plantID._id)}
-                            aria-label="Delete plant"
-                        >
-                            <i className="bi bi-trash"></i>
                         </button>
                     </div>
                     )}
