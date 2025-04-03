@@ -10,18 +10,19 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
         notes: '',
         waterFrequency: 7,           // Default to weekly watering
         harvestMonths: [],
-        baseColor: '#2c5530'
+        baseColor: '#2c5530',
+        group: groupId || ''        // If null, init with empty string
     });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/plants', {
-                ...formData,                // Spread the form data into the request body
-                group: groupId              // Associate the new plant with the selected group
+                ...formData,                            // Spread the form data into the request body
+                group: groupId || formData.group        // If no group is provided, use the one from formData
             });
             console.log('Plant created:', response.data);
-            onClose(response.data);         // Pass the new plant back to parent
+            onClose(response.data);                     // Pass the new plant back to parent
         } catch (error) {
             console.error('Error creating plant:', error);
         }
@@ -80,6 +81,28 @@ function CreatePlantModal({ groupId, isOpen, onClose }) {
                             rows="3"
                         />
                     </div>
+
+                    {groupId === null && (
+                    <div className="form-group">
+                        <label>Plant Group</label>
+                        <select
+                            name="group"
+                            id="group"
+                            className="water-frequency-select"
+                            value={formData.group}
+                            onChange={(e) => setFormData({...formData, group: e.target.value})}
+                            required
+                        >
+                            {/* Iterate over current groups and create an option for each */}
+                            {groups.map(group => (
+                                <option key={group._id} value={group._id}>
+                                    {group.name}
+                                </option>
+                            ))}
+
+                        </select>
+                    </div>
+                    )}
 
                     <div className="form-group">
                         <label>Watering Frequency</label>
