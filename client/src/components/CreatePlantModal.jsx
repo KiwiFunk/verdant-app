@@ -48,7 +48,7 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
             } catch (error) {
                 console.error('Error creating plant:', error);
             }
-            
+
         } else if (isEditMode) {                                // If in edit mode, PATCH request to update the plant
             try {
                 const response = await axios.patch(`${API_URL}/${plantID._id}`, {
@@ -62,6 +62,16 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
 
         } else {                                                // If neither, log an error
             console.error('Something went wrong!');
+        }
+    };
+
+    // Delete target plant object (DELETE)
+    const deletePlant = async (plantId) => {
+        try {
+            await axios.delete(`${API_URL}/${plantId}`);    // Send DELETE request to server
+            onDataChange();                                 // Refresh app data after deletion
+        } catch (error) {
+            console.error('Error deleting plant:', error);
         }
     };
 
@@ -220,6 +230,13 @@ function CreatePlantModal({ groupId, groups, isOpen, onClose, plantID }) {
                         </button>
                         <button type="submit" className="btn submit-btn">
                             Save Changes
+                        </button>
+                        <button 
+                            className="btn delete-button"
+                            onClick={() => deletePlant(plantID._id)}
+                            aria-label="Delete plant"
+                        >
+                            <i className="bi bi-trash"></i>
                         </button>
                     </div>
                     )}

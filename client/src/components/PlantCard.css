@@ -178,11 +178,12 @@
     transform: translateY(-2px);
 }
 
-.delete-button {
+.edit-button {
     background-color: var(--overlay-light);
     color: white;
 }
 
-.delete-button:hover {
-    background-color: var(--water-low);
+.edit-button:hover {
+    background-color: white;
+    color: black;
 }

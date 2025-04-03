@@ -206,3 +206,12 @@
     background-size: 16px 12px;
     padding-right: 2.5rem;
 }
+
+.delete-button {
+    background-color: var(--overlay-light);
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: var(--water-low);
+}

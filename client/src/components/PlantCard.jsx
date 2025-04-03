@@ -113,7 +113,7 @@ function PlantCard({ plant, onDataChange, onEditPlant }) {
                         </button>
                             
                         <button 
-                            className="btn delete-button"
+                            className="btn edit-button"
                             onClick={() => onEditPlant(_id)}
                             aria-label="Edit plant"
                         >
