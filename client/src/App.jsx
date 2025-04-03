@@ -78,11 +78,11 @@ function App() {
       />
 
       {/* Handle Plant Creation Modal */}
-      {isModalOpen && (
+      {modalData.isOpen && (
         <CreatePlantModal
-          groupId={groupId}
+          groupId={modalData.groupId}
+          plantToEdit={modalData.plantToEdit}
           groups={appData}
-          isOpen={isModalOpen}
           onClose={handleCloseModal}
         />
       )}
