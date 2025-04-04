@@ -71,3 +71,27 @@ export const needsNormalization = (items) => {
     
     return false;
   };
+
+/**
+    * Normalize positions to have even spacing
+    * @param {Array} items - Items with position property
+    * @returns {Array} - Items with normalized positions
+*/
+export const normalizePositions = (items) => {
+    if (!items || items.length === 0) return [];
+    
+    // Sort by current position
+    const sorted = [...items].sort((a, b) => 
+      (a.position || 0) - (b.position || 0)
+    );
+    
+    // Reassign positions with consistent gaps
+    for (let i = 0; i < sorted.length; i++) {           // Iterate through sorted array
+        sorted[i] = {
+            ...sorted[i],                               // Spread object to keep other properties
+            position: (i + 1) * POSITION_INCREMENT      // Update the objects position property (Plus one to avoid zero)
+        };
+    }
+
+    return sorted;
+  };
