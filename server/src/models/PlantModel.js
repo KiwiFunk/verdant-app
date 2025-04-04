@@ -9,7 +9,7 @@ const PlantSchema = new mongoose.Schema({
     harvestMonths: [{ type: String }],
     baseColor: { type: String, default: '#2c5530' },
     group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
-    position: { type: Number }
+    position: { type: Number, default: 0, index: true }
 });
 
 module.exports = mongoose.model('Plant', PlantSchema);
