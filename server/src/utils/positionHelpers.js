@@ -24,3 +24,23 @@ export const getPositionForNewItem = (items = []) => {
   return maxPosition + POSITION_INCREMENT;
 };
 
+/**
+ * Calculates a position between two items (for reordering)
+ * @param {number|null} beforePosition - Position of item before
+ * @param {number|null} afterPosition - Position of item after
+ * @returns {number} - New position between the two
+ */
+export const getPositionBetween = (beforePosition, afterPosition) => {
+    // If inserting at the beginning
+    if (beforePosition == null) {
+      return afterPosition != null ? afterPosition / 2 : POSITION_INCREMENT;
+    }
+    
+    // If inserting at the end
+    if (afterPosition == null) {
+      return beforePosition + POSITION_INCREMENT;
+    }
+    
+    // Insert between two positions
+    return (beforePosition + afterPosition) / 2;
+  };
