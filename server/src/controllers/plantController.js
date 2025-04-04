@@ -2,7 +2,7 @@ const Plant = require('../models/PlantModel');
 const Group = require('../models/GroupModel');
 
 const plantController = {
-    
+
     // Create new plant object (POST Request)
     createPlant: async (req, res) => {
         try {
@@ -98,6 +98,54 @@ const plantController = {
             res.status(200).json({ message: 'Plant deleted successfully' });
         } catch (error) {
             console.error('Could not delete plant:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // Reorder plants endpoint
+    reorderPlant: async (req, res) => {
+        try {
+            const { plantId, newPosition } = req.body;
+            
+            const updatedPlant = await Plant.findByIdAndUpdate(
+                plantId,
+                { position: newPosition },
+                { new: true }
+            );
+            
+            if (!updatedPlant) {
+                return res.status(404).json({ message: 'Plant not found' });
+            }
+            
+            res.status(200).json(updatedPlant);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+    
+    // Normalize plant positions endpoint
+    normalizePlantPositions: async (req, res) => {
+        try {
+            const { groupId } = req.params;
+            
+            // Get all plants in the group sorted by position
+            const plants = await Plant.find({ group: groupId }).sort({ position: 1 });
+            
+            // Calculate new positions with even spacing
+            const updates = plants.map((plant, index) => ({
+                updateOne: {
+                    filter: { _id: plant._id },
+                    update: { position: (index + 1) * 10000 }
+                }
+            }));
+            
+            // Apply updates in a single bulk operation
+            if (updates.length > 0) {
+                await Plant.bulkWrite(updates);
+            }
+            
+            res.status(200).json({ message: 'Plant positions normalized successfully' });
+        } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
