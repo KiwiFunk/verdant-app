@@ -2,10 +2,12 @@ const Group = require('../models/GroupModel');
 var Plant = require('../models/PlantModel');        //Get Plant model for garbage collection
 
 const groupController = {
+
     // Get all groups (GET Request)
     getAllGroups: async (req, res) => {
         try {
-            const groups = await Group.find().populate('plants');
+            // Sort by position when populating the groups ({Position: 1} indicates ascending order in MongoDB)
+            const groups = await Group.find().populate('plants').sort({ position: 1 });
             res.json(groups);
         } catch (error) {
             res.status(500).json({ message: error.message });
