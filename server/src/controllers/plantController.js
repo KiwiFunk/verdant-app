@@ -2,10 +2,23 @@ const Plant = require('../models/PlantModel');
 const Group = require('../models/GroupModel');
 
 const plantController = {
+    
     // Create new plant object (POST Request)
     createPlant: async (req, res) => {
         try {
-            const newPlant = new Plant(req.body);
+            // Find highest position in the group for spatial positioning
+            const groupPlants = await Plant.find({ group: req.body.group });
+            let position = 10000;
+            
+            if (groupPlants.length > 0) {
+                const maxPosition = Math.max(...groupPlants.map(p => p.position || 0));
+                position = maxPosition + 10000;
+            }
+            
+            const newPlant = new Plant({
+                ...req.body,
+                position: position
+            });
             const savedPlant = await newPlant.save();
             
             // Add plant to group
