@@ -7,4 +7,8 @@ router.post('/', groupController.createGroup);
 router.patch('/:id', groupController.updateGroup);
 router.delete('/:id', groupController.deleteGroup);
 
+// Position management routes
+router.patch('/reorder', groupController.reorderGroup);
+router.post('/normalize', groupController.normalizeGroupPositions);
+
 module.exports = router;
