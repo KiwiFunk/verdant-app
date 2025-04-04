@@ -68,7 +68,51 @@ const groupController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
-    }
+    },
+
+    // Reorder endpoint
+    reorderGroup: async (req, res) => {
+        try {
+            const { groupId, newPosition } = req.body;
+            
+            const updatedGroup = await Group.findByIdAndUpdate(
+                groupId,
+                { position: newPosition },
+                { new: true }
+            );
+            
+            if (!updatedGroup) {
+                return res.status(404).json({ message: 'Group not found' });
+            }
+            
+            res.status(200).json(updatedGroup);
+        } catch (error) {
+            res.status(400).json({ message: error.message });
+        }
+    },
+    
+    // Normalize positions endpoint
+    normalizeGroupPositions: async (req, res) => {
+        try {
+            // Get all groups sorted by position
+            const groups = await Group.find().sort({ position: 1 });
+            
+            // Calculate new positions with even spacing
+            const updates = groups.map((group, index) => ({
+                updateOne: {
+                    filter: { _id: group._id },
+                    update: { position: (index + 1) * 10000 }
+                }
+            }));
+            
+            // Apply updates in a single bulk operation
+            await Group.bulkWrite(updates);
+            
+            res.status(200).json({ message: 'Group positions normalized successfully' });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 };
 
 module.exports = groupController;
