@@ -24,12 +24,13 @@ export const getPositionForNewItem = (items = []) => {
   return maxPosition + POSITION_INCREMENT;
 };
 
+
 /**
- * Calculates a position between two items (for reordering)
- * @param {number|null} beforePosition - Position of item before
- * @param {number|null} afterPosition - Position of item after
- * @returns {number} - New position between the two
- */
+    * Calculates a position between two items (for reordering)
+    * @param {number|null} beforePosition - Position of item before
+    * @param {number|null} afterPosition - Position of item after
+    * @returns {number} - New position between the two
+*/
 export const getPositionBetween = (beforePosition, afterPosition) => {
     // If inserting at the beginning
     if (beforePosition == null) {
@@ -43,4 +44,30 @@ export const getPositionBetween = (beforePosition, afterPosition) => {
     
     // Insert between two positions
     return (beforePosition + afterPosition) / 2;
+  };
+
+
+/**
+    * Determines if positions need normalization
+    * (when positions get too close and floating point issues might arise)
+    * @param {Array} items - Items with position property
+    * @returns {boolean} - True if normalization is needed
+*/
+export const needsNormalization = (items) => {
+    // Create an array of items sorted by numeric value
+    const sorted = [...items].sort((a, b) => 
+      (a.position || 0) - (b.position || 0)
+    );
+    
+    // Iterate through sorted array, Check if any adjacent items are too close in position
+    for (let i = 0; i < sorted.length - 1; i++) {
+      const current = sorted[i].position || 0;
+      const next = sorted[i + 1].position || 0;
+      
+      if (next - current < 1) {
+        return true;
+      }
+    }
+    
+    return false;
   };
