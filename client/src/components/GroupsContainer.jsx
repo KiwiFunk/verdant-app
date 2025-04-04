@@ -36,6 +36,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                 </button>
             </div>
 
+            {groups.length? (
             <div className="groups-grid">
                 {groups.map(group => (
                     <Group
@@ -46,6 +47,12 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                     />
                 ))}
             </div>
+            ) : (
+                <div className="empty-group">
+                    <i className="bi bi-folder2-open"></i>
+                    <p>Create a new group to get started!</p>
+                </div>
+            )}
 
         </div>
     );
