@@ -17,9 +17,16 @@ const groupController = {
     // Create a group (POST Request)
     createGroup: async (req, res) => {
         try {
+
+            // Find last position to determine new position (findOne() returns first item that has been sorted in descending order)
+            const lastGroup = await Group.findOne().sort({ position: -1 });
+            // !!Move hardcoded values to environment variables!!
+            const position = lastGroup ? lastGroup.position + 10000 : 10000;
+
             const newGroup = new Group({
                 name: req.body.name,
-                plants: []
+                plants: [],
+                position: position // Set the calculated position
             });
             const savedGroup = await newGroup.save();
             res.status(201).json(savedGroup);
