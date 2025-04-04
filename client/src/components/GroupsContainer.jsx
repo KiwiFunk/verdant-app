@@ -4,13 +4,7 @@ import Group from './Group';
 
 function Groups({ groups, onAddPlant, onDataChange }) {
     
-    // States to manage groups and handle their editing states
-    const [editingId, setEditingId] = useState(null);   
-    const [editingName, setEditingName] = useState('');
-    const editInputRef = useRef(null);
-    
     const API_URL = 'http://localhost:5000/api';
-
 
     //Send POST request to create a new group
     const createGroup = async () => {
