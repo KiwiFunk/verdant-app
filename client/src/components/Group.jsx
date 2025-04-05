@@ -4,10 +4,7 @@ import PlantCard from './PlantCard';
 import PlantCardCompact from './PlantCardCompact';
 import { 
     useDraggable,
-    DndContext, 
-    useSensor, 
-    useSensors, 
-    PointerSensor 
+    useDroppable
 } from '@dnd-kit/core';
 import DroppableArea from './DropAreaWrapper';
 
@@ -21,13 +18,6 @@ function Group({ group, onAddPlant, onDataChange }) {
         id: group._id
     });
 
-    // Create sensor for DnD Kit
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: { distance: 8 }
-        })
-    );
-    
     // States to manage groups and handle their editing states
     const [editingId, setEditingId] = useState(null);   
     const [editingName, setEditingName] = useState('');
