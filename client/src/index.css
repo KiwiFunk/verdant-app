@@ -57,3 +57,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.content-spacer {
+  flex-grow: 2;
+}

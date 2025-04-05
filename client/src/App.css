@@ -88,7 +88,7 @@
 
 .group-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0.8rem 1rem;
   border-bottom: 1px solid #eee;
@@ -267,4 +267,12 @@ header {
 
 .group-settings-item:hover {
   background-color: var(--overlay-dark);
+}
+
+.grab-handle {
+  margin-left: -5px;
+  margin-right: 10px;
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
 }

@@ -85,17 +85,18 @@ function Groups({ group, onAddPlant, onDataChange }) {
         <div className="group-card"
             ref={setNodeRef}                        // Set group card as draggable element
             style={{                                // Basic styling for drag state (Move to CSS later)
-                cursor: isDragging ? 'grabbing' : 'grab',
                 opacity: isDragging ? 0.5 : 1, 
                 position: 'relative' 
             }}
         >
 
             {/* Group header with name and controls */}
-            <div className="group-header"
-                {...attributes}             // DnD Kit attributes for drag-and-drop functionality
-                {...listeners}              // DnD Kit listeners for drag-and-drop functionality
-            >
+            <div className="group-header">
+
+                <div className="grab-handle" {...attributes} {...listeners}>
+                    <i className="bi bi-grip-vertical"></i>
+                </div>
+
                 {editingId === group._id ? (
                     <input
                         ref={editInputRef}
@@ -111,6 +112,9 @@ function Groups({ group, onAddPlant, onDataChange }) {
                         {group.name}
                     </h3>
                     )}
+
+                <div className="content-spacer"></div>
+
                 {/* Group controls */}
                 <div id="group-controls">
                     <button className="toggle-view-btn" onClick={() => toggleCollapse(group._id, group.isCollapsed)}>
