@@ -43,8 +43,9 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         if (!over || active.id === over.id) return;
     
         try {
-            const draggedId = active.id;
-            const overId = over.id;
+            // Extract the real group IDs (remove "group-" prefix if present)
+            const draggedId = active.id.toString().replace('group-', '');
+            const overId = over.id.toString().replace('group-', '');
     
             console.log(`Moving group ${draggedId} to position of ${overId}`);
     
@@ -72,6 +73,79 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             onDataChange();
         } catch (error) {
             console.error('Reorder error:', error.response?.data || error.message);
+        }
+    };
+
+    // Handle plant drag between or within groups
+    const handlePlantDragEnd = async (event) => {
+        const { active, over } = event;
+
+        // Exit if no valid drop target or dropped on itself
+        if (!over || active.id === over.id) return;
+
+        try {
+            const plantId = active.id;
+            const targetId = over.id;
+            const allPlants = groups.flatMap(g => g.plants);
+
+            console.log(`Moving plant ${plantId} to target ${targetId}`);
+
+            // Get source plant and current group details
+            const sourcePlant = allPlants.find(p => p._id === plantId);
+            if (!sourcePlant) return;
+
+            const sourceGroupId = sourcePlant.group._id || sourcePlant.group;
+
+            // Handle dropping on a group
+            if (targetId.startsWith('group-')) {
+                const targetGroupId = targetId.replace('group-', '');
+                if (sourceGroupId === targetGroupId) return; // No move needed within the same group
+
+                const targetGroup = groups.find(g => g._id === targetGroupId);
+                if (!targetGroup) return;
+
+                // Place at the end of the target group
+                const targetPlants = targetGroup.plants.sort((a, b) => (a.position || 0) - (b.position || 0));
+                const beforeId = targetPlants.length ? targetPlants[targetPlants.length - 1]._id : null;
+
+                await axios.patch(`${API_URL}/plants/reorder`, { plantId, beforeId, afterId: null, groupId: targetGroupId });
+                onDataChange();
+                return;
+            }
+
+            // Handle dropping on another plant
+            const targetPlant = allPlants.find(p => p._id === targetId);
+            if (!targetPlant) return;
+
+            const targetGroupId = targetPlant.group._id || targetPlant.group;
+            const targetGroup = groups.find(g => g._id === targetGroupId);
+            if (!targetGroup) return;
+
+            const targetGroupPlants = targetGroup.plants.sort((a, b) => (a.position || 0) - (b.position || 0));
+            const draggedIndex = targetGroupPlants.findIndex(p => p._id === plantId);
+            const targetIndex = targetGroupPlants.findIndex(p => p._id === targetId);
+
+            // Calculate beforeId and afterId
+            const isDraggingUp = draggedIndex > targetIndex && sourceGroupId === targetGroupId;
+            const beforeId = isDraggingUp
+                ? targetIndex > 0 ? targetGroupPlants[targetIndex - 1]._id : null
+                : targetId;
+            const afterId = isDraggingUp
+                ? targetId
+                : targetIndex < targetGroupPlants.length - 1 ? targetGroupPlants[targetIndex + 1]._id : null;
+
+            console.log('API call with:', {
+                plantId,
+                beforeId,
+                afterId,
+                groupId: sourceGroupId !== targetGroupId ? targetGroupId : undefined,
+                direction: isDraggingUp ? 'up' : 'down',
+            });
+
+            await axios.patch(`${API_URL}/plants/reorder`, { plantId, beforeId, afterId, groupId: sourceGroupId !== targetGroupId ? targetGroupId : undefined });
+            onDataChange();
+        } catch (error) {
+            console.error('Error moving plant:', error.response?.data || error.message);
         }
     };
 
@@ -113,7 +187,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                     <div className="groups-grid">
                         {sortedGroups
                             .map(group => (
-                                <DroppableArea key={group._id} id={group._id}>
+                                <DroppableArea key={group._id} id={`group-${group._id}`}>
                                     <Group
                                         key={group._id}
                                         group={group}

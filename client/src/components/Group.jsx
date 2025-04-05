@@ -24,7 +24,7 @@ function Group({ group, onAddPlant, onDataChange }) {
 
     // Drop target for plant items
     const { setNodeRef: setDropRef, isOver } = useDroppable({
-        id: `group-${group._id}`, // Add prefix to avoid ID conflicts
+        id: `group-${group._id}`,       // Add prefix to avoid ID conflicts with plants
         data: {
             type: 'group',
             groupId: group._id
