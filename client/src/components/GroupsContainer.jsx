@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { DndContext } from '@dnd-kit/core';
 import Group from './Group';
 
 function Groups({ groups, onAddPlant, onDataChange }) {
@@ -31,18 +32,20 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             </div>
 
             {groups.length? (
-            <div className="groups-grid">
-                {[...groups]
-                    .sort((a, b) => (a.position || 0) - (b.position || 0))
-                    .map(group => (
-                        <Group
-                            key={group._id}
-                            group={group}
-                            onAddPlant={onAddPlant}
-                            onDataChange={onDataChange}
-                        />
-                    ))}
-            </div>
+                <DndContext onDragEnd={handleDragEnd}>
+                    <div className="groups-grid">
+                        {[...groups]
+                            .sort((a, b) => (a.position || 0) - (b.position || 0))
+                            .map(group => (
+                                <Group
+                                    key={group._id}
+                                    group={group}
+                                    onAddPlant={onAddPlant}
+                                    onDataChange={onDataChange}
+                                />
+                            ))}
+                    </div>
+                </DndContext>
             ) : (
                 <div className="empty-group">
                     <i className="bi bi-folder2-open"></i>
