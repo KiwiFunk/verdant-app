@@ -13,6 +13,9 @@ import DroppableArea from './DropAreaWrapper';
 
 function Group({ group, onAddPlant, onDataChange }) {
 
+    //Sort plant objects by their position field
+    const sortedPlants = [...group.plants].sort((a, b) => (a.position || 0) - (b.position || 0)); 
+
     // DnD Kit for drag-and-drop functionality
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
         id: group._id
@@ -97,7 +100,35 @@ function Group({ group, onAddPlant, onDataChange }) {
 
     // Handle plant drag within group
     const handlePlantDragEnd = async (event) => {
-        console.log('Drag event:', event);                // Log the drag event for debugging
+        const { active, over } = event;
+        
+        if (!over || active.id === over.id) return;
+        
+        try {
+            const plantId = active.id;
+            const targetId = over.id;
+            
+            // Find positions of plants
+            const targetIndex = sortedPlants.findIndex(p => p._id === targetId);
+            
+            // Calculate before/after IDs for positioning
+            const beforeId = targetIndex > 0 ? sortedPlants[targetIndex - 1]._id : null;
+            const afterId = targetId;
+            
+            console.log('Reordering plant:', { plantId, beforeId, afterId });
+            
+            // Call the reordering API
+            await axios.patch(`${API_URL}/plants/reorder`, {
+                plantId,
+                beforeId,
+                afterId,
+                // We're not changing groups yet, so no groupId needed
+            });
+            
+            onDataChange();
+        } catch (error) {
+            console.error('Error reordering plant:', error);
+        }
     };
 
     return (
@@ -162,8 +193,7 @@ function Group({ group, onAddPlant, onDataChange }) {
                 {group.plants?.length ? (
                     <DndContext sensors={sensors} onDragEnd={handlePlantDragEnd}>
                         <div className="plant-card-container">
-                            {[...group.plants]
-                                .sort((a, b) => (a.position || 0) - (b.position || 0))
+                            {sortedPlants
                                 .map(plant => (
                                     // Pass the plant as a prop to the PlantCard component
                                     <DroppableArea key={plant._id} id={plant._id}>
