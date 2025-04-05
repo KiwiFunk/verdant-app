@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'; // Removed unused useRef
 import axios from 'axios';
 import './PlantCard.css';
+import { useDraggable } from '@dnd-kit/core';
 
 function PlantCard({ plant, onDataChange, onEditPlant }) {
     // Destructure the plant object from the prop to get the data from the fields
@@ -17,6 +18,15 @@ function PlantCard({ plant, onDataChange, onEditPlant }) {
 
     // HTTP Request functions
     const API_URL = 'http://localhost:5000/api/plants';
+
+    // Set plant item as draggable
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+        id: _id,
+        data: {
+            type: 'plant',      
+            plant
+        }
+    });
 
     // Use PATCH request to water the plant (reset water level to 100, update last watered date)
     const handleWater = async () => {
@@ -64,7 +74,16 @@ function PlantCard({ plant, onDataChange, onEditPlant }) {
 
     // Plant Card
     return (
-        <div className="plant-card card-expanded" style={{ backgroundColor: baseColor }}>
+        <div 
+            className="plant-card card-expanded" 
+            ref={setNodeRef}                     // Set plant card as draggable element
+            style={{ 
+                backgroundColor: baseColor, 
+                opacity: isDragging ? 0.5 : 1,
+            }}
+            {...attributes} 
+            {...listeners}
+        >
 
             <div className='card-data'>
 
