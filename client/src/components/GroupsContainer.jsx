@@ -1,12 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { DndContext } from '@dnd-kit/core';
+import { 
+    DndContext, 
+    useSensor,
+    useSensors,
+    PointerSensor 
+} from '@dnd-kit/core';
+
 import Group from './Group';
 import DroppableArea from './DropAreaWrapper';
 
 function Groups({ groups, onAddPlant, onDataChange }) {
     
     const API_URL = 'http://localhost:5000/api';
+
+    // Set up DnD kit sensors.
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 8 }           // Start drag after moving 8px
+        })
+    );
 
     //Send POST request to create a new group
     const createGroup = async () => {
@@ -39,7 +52,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             </div>
 
             {groups.length? (
-                <DndContext onDragEnd={handleDragEnd}>
+                <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
                     <div className="groups-grid">
                         {[...groups]
                             .sort((a, b) => (a.position || 0) - (b.position || 0))
