@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'; // Removed unused useRef
 import axios from 'axios';
 import './PlantCard.css';
+import { useDraggable } from '@dnd-kit/core';
 
 function PlantCardCompact({ plant, onDataChange }) {
     // Destructure the plant object from the prop to get the data from the fields
@@ -12,6 +13,15 @@ function PlantCardCompact({ plant, onDataChange }) {
         lastWatered,
         baseColor
     } = plant;
+
+    // Set plant item as draggable
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+        id: _id,
+        data: {
+            type: 'plant',      
+            plant
+        }
+    });
 
     //Calculate water level from current date, last watered date, and water frequency
     const calculateWaterLevel = () => {
@@ -39,7 +49,16 @@ function PlantCardCompact({ plant, onDataChange }) {
 
     // Plant Card
     return (
-        <div className="plant-card" style={{ backgroundColor: baseColor }}>
+        <div 
+            className="plant-card" 
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            style={{ 
+                backgroundColor: baseColor, 
+                opacity: isDragging ? 0.5 : 1,
+            }}
+        >
 
             <div className='card-data'>
 
