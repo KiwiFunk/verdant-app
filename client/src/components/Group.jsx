@@ -9,6 +9,7 @@ import {
     useSensors, 
     PointerSensor 
 } from '@dnd-kit/core';
+import DroppableArea from './DropAreaWrapper';
 
 function Group({ group, onAddPlant, onDataChange }) {
 
@@ -94,6 +95,11 @@ function Group({ group, onAddPlant, onDataChange }) {
         return () => document.removeEventListener('click', handleClickOutside);     // Cleanup event listener
     }, []);
 
+    // Handle plant drag within group
+    const handlePlantDragEnd = async (event) => {
+        console.log('Drag event:', event);                // Log the drag event for debugging
+    };
+
     return (
         <div className="group-card"
             ref={setNodeRef}                        // Set group card as draggable element
@@ -154,27 +160,31 @@ function Group({ group, onAddPlant, onDataChange }) {
             {/* Group body */}
             <div className="group-content">
                 {group.plants?.length ? (
-                    <div className="plant-card-container">
-                        {[...group.plants]
-                            .sort((a, b) => (a.position || 0) - (b.position || 0))
-                            .map(plant => (
-                                // Pass the plant as a prop to the PlantCard component
-                                group.isCollapsed ? (
-                                    <PlantCardCompact
-                                        key={plant._id}
-                                        plant={plant}
-                                        onDataChange={onDataChange}
-                                    />
-                                ) : (
-                                    <PlantCard
-                                        key={plant._id}
-                                        plant={plant}
-                                        onDataChange={onDataChange}
-                                        onEditPlant={onAddPlant}
-                                    />
-                                )
-                            ))}
-                    </div>
+                    <DndContext sensors={sensors} onDragEnd={handlePlantDragEnd}>
+                        <div className="plant-card-container">
+                            {[...group.plants]
+                                .sort((a, b) => (a.position || 0) - (b.position || 0))
+                                .map(plant => (
+                                    // Pass the plant as a prop to the PlantCard component
+                                    <DroppableArea key={plant._id} id={plant._id}>
+                                        group.isCollapsed ? (
+                                            <PlantCardCompact
+                                                key={plant._id}
+                                                plant={plant}
+                                                onDataChange={onDataChange}
+                                            />
+                                        ) : (
+                                            <PlantCard
+                                                key={plant._id}
+                                                plant={plant}
+                                                onDataChange={onDataChange}
+                                                onEditPlant={onAddPlant}
+                                            />
+                                        )
+                                    </DroppableArea>
+                                ))}
+                        </div>
+                    </DndContext>
                 ) : (
                     <div className="empty-group">
                         <i className="bi bi-flower1"></i>
