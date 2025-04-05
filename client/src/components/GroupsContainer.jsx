@@ -40,15 +40,36 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             return;
         }
         
-        console.log(`Moving group ${active.id} to position of ${over.id}`);
-        
-        // Find the groups by ID
-        const sortedGroups = [...groups].sort((a, b) => (a.position || 0) - (b.position || 0));
-        const draggedIndex = sortedGroups.findIndex(g => g._id === active.id);
-        const targetIndex = sortedGroups.findIndex(g => g._id === over.id);
-        
-        // Replace with API calls to update the positions of the groups in the database
-        console.log(`Moving from index ${draggedIndex} to index ${targetIndex}`);
+        try {
+            // Find the dragged group and drop target indices
+            const sortedGroups = [...groups].sort((a, b) => (a.position || 0) - (b.position || 0));
+            const draggedIndex = sortedGroups.findIndex(g => g._id === active.id);
+            const targetIndex = sortedGroups.findIndex(g => g._id === over.id);
+            
+            // Find the IDs needed for the API
+            const beforeGroupId = targetIndex > 0 ? sortedGroups[targetIndex - 1]._id : null;
+            const afterGroupId = targetIndex < sortedGroups.length - 1 ? 
+                sortedGroups[targetIndex]._id : null;
+            
+            console.log('Updating position with:', {
+                groupId: active.id,
+                beforeId: beforeGroupId,
+                afterId: afterGroupId
+            });
+            
+            // Call the API to update the position
+            await axios.patch(`${API_URL}/groups/reorder`, {
+                groupId: active.id,
+                beforeId: beforeGroupId,
+                afterId: afterGroupId
+            });
+            
+            // Refresh the data
+            onDataChange();
+            
+        } catch (error) {
+            console.error('Error reordering groups:', error);
+        }
     };
 
     return (
