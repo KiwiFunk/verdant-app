@@ -90,7 +90,26 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             </div>
 
             {groups.length? (
-                <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+                <DndContext 
+                    sensors={sensors}
+                    onDragEnd={(event) => {
+                        // Check what type of element is being dragged
+                        const { active } = event;
+                        
+                        // If data.current doesn't exist, assume it's a group (for backward compatibility)
+                        const isDraggingGroup = !active.data?.current || 
+                            active.data.current.type === 'group' ||
+                            !active.data.current.type;
+                            
+                        if (isDraggingGroup) {
+                            // Handle group drag with existing function
+                            handleDragEnd(event);
+                        } else {
+                            // Handle plant drag with new function
+                            handlePlantDragEnd(event);
+                        }
+                    }}
+                >
                     <div className="groups-grid">
                         {sortedGroups
                             .map(group => (
