@@ -10,10 +10,9 @@ function DroppableArea({ id, children }) {
         <div 
             ref={setNodeRef} 
             style={{ 
-                padding: '5px',
-                marginBottom: '1rem',
+                margin: isOver ? '14px' : '0px',
                 background: isOver ? 'rgba(135, 151, 109, 0.1)' : 'transparent',
-                borderRadius: '25px',
+                borderRadius: 'var(--border-radius)',
                 transition: 'background 0.2s'
             }}
         >

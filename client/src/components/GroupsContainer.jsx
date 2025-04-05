@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { DndContext } from '@dnd-kit/core';
 import Group from './Group';
+import DroppableArea from './DropAreaWrapper';
 
 function Groups({ groups, onAddPlant, onDataChange }) {
     
@@ -43,12 +44,14 @@ function Groups({ groups, onAddPlant, onDataChange }) {
                         {[...groups]
                             .sort((a, b) => (a.position || 0) - (b.position || 0))
                             .map(group => (
-                                <Group
-                                    key={group._id}
-                                    group={group}
-                                    onAddPlant={onAddPlant}
-                                    onDataChange={onDataChange}
-                                />
+                                <DroppableArea key={group._id} id={group._id}>
+                                    <Group
+                                        key={group._id}
+                                        group={group}
+                                        onAddPlant={onAddPlant}
+                                        onDataChange={onDataChange}
+                                    />
+                                </DroppableArea>
                             ))}
                     </div>
                 </DndContext>
