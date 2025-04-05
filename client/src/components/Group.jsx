@@ -2,7 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PlantCard from './PlantCard';
 import PlantCardCompact from './PlantCardCompact';
-import { useDraggable } from '@dnd-kit/core';
+import { 
+    useDraggable,
+    DndContext, 
+    useSensor, 
+    useSensors, 
+    PointerSensor 
+} from '@dnd-kit/core';
 
 function Group({ group, onAddPlant, onDataChange }) {
 
