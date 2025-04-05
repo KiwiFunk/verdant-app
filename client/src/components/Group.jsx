@@ -101,33 +101,40 @@ function Group({ group, onAddPlant, onDataChange }) {
     // Handle plant drag within group
     const handlePlantDragEnd = async (event) => {
         const { active, over } = event;
-        
+    
+        // Exit if no valid drop target or dropped on itself
         if (!over || active.id === over.id) return;
-        
+    
         try {
-            const plantId = active.id;
-            const targetId = over.id;
-            
-            // Find positions of plants
+            const draggedId = active.id; // The plant being dragged
+            const targetId = over.id;   // The plant it was dropped onto
+    
+            console.log(`Reordering plant ${draggedId} to position of ${targetId}`);
+    
+            // Find indices of dragged plant and target plant
+            const draggedIndex = sortedPlants.findIndex(p => p._id === draggedId);
             const targetIndex = sortedPlants.findIndex(p => p._id === targetId);
-            
-            // Calculate before/after IDs for positioning
-            const beforeId = targetIndex > 0 ? sortedPlants[targetIndex - 1]._id : null;
-            const afterId = targetId;
-            
-            console.log('Reordering plant:', { plantId, beforeId, afterId });
-            
+    
+            // Determine reordering direction
+            const isDraggingUp = draggedIndex > targetIndex;
+    
+            // Calculate beforeId and afterId based on drag direction
+            const beforeId = isDraggingUp
+                ? targetIndex > 0 ? sortedPlants[targetIndex - 1]._id : null
+                : targetId;
+            const afterId = isDraggingUp
+                ? targetId
+                : targetIndex < sortedPlants.length - 1 ? sortedPlants[targetIndex + 1]._id : null;
+    
+            console.log('API call with:', { plantId: draggedId, beforeId, afterId });
+    
             // Call the reordering API
-            await axios.patch(`${API_URL}/plants/reorder`, {
-                plantId,
-                beforeId,
-                afterId,
-                // We're not changing groups yet, so no groupId needed
-            });
-            
+            await axios.patch(`${API_URL}/plants/reorder`, { plantId: draggedId, beforeId, afterId });
+    
+            // Refresh the data to reflect the new order
             onDataChange();
         } catch (error) {
-            console.error('Error reordering plant:', error);
+            console.error('Error reordering plant:', error.response?.data || error.message);
         }
     };
 
