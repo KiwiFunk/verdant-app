@@ -167,7 +167,7 @@ function Group({ group, onAddPlant, onDataChange }) {
                                 .map(plant => (
                                     // Pass the plant as a prop to the PlantCard component
                                     <DroppableArea key={plant._id} id={plant._id}>
-                                        group.isCollapsed ? (
+                                        {group.isCollapsed ? (
                                             <PlantCardCompact
                                                 key={plant._id}
                                                 plant={plant}
@@ -180,7 +180,7 @@ function Group({ group, onAddPlant, onDataChange }) {
                                                 onDataChange={onDataChange}
                                                 onEditPlant={onAddPlant}
                                             />
-                                        )
+                                        )}
                                     </DroppableArea>
                                 ))}
                         </div>
