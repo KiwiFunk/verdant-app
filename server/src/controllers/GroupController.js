@@ -1,5 +1,11 @@
 const Group = require('../models/GroupModel');
 var Plant = require('../models/PlantModel');        //Get Plant model for garbage collection
+const { 
+    getPositionForNewItem, 
+    getPositionBetween, 
+    needsNormalization, 
+    normalizePositions 
+} = require('../utils/positionHelpers');
 
 const groupController = {
 
@@ -18,10 +24,9 @@ const groupController = {
     createGroup: async (req, res) => {
         try {
 
-            // Find last position to determine new position (findOne() returns first item that has been sorted in descending order)
-            const lastGroup = await Group.findOne().sort({ position: -1 });
-            // !!Move hardcoded values to environment variables!!
-            const position = lastGroup ? lastGroup.position + 10000 : 10000;
+            // Get all groups then calculate the position for the new group
+            const allGroups = await Group.find({}, 'position');
+            const position = getPositionForNewItem(allGroups);
 
             const newGroup = new Group({
                 name: req.body.name,
@@ -70,11 +75,21 @@ const groupController = {
         }
     },
 
-    // Reorder endpoint
+    // Reorder endpoint - Check if group needs normalization
     reorderGroup: async (req, res) => {
         try {
-            const { groupId, newPosition } = req.body;
+            const { groupId, beforeId, afterId } = req.body;
             
+            // Find the positions of before and after groups
+            const beforeGroup = beforeId ? await Group.findById(beforeId, 'position') : null;
+            const afterGroup = afterId ? await Group.findById(afterId, 'position') : null;
+            
+            // Calculate new position using helper
+            const beforePosition = beforeGroup ? beforeGroup.position : null;
+            const afterPosition = afterGroup ? afterGroup.position : null;
+            const newPosition = getPositionBetween(beforePosition, afterPosition);
+            
+            // Update the group position
             const updatedGroup = await Group.findByIdAndUpdate(
                 groupId,
                 { position: newPosition },
@@ -85,28 +100,43 @@ const groupController = {
                 return res.status(404).json({ message: 'Group not found' });
             }
             
+            // Check if normalization is needed after this operation
+            const allGroups = await Group.find({}, 'position');
+            if (needsNormalization(allGroups)) {
+                await groupController.normalizeGroupPositions(req, res, true);
+                return; // The response will be sent by normalizeGroupPositions
+            }
+            
             res.status(200).json(updatedGroup);
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
     },
     
-    // Normalize positions endpoint
-    normalizeGroupPositions: async (req, res) => {
+    // Normalize positions endpoint - Updated to use normalizePositions helper
+    normalizeGroupPositions: async (req, res, isInternal = false) => {
         try {
-            // Get all groups sorted by position
-            const groups = await Group.find().sort({ position: 1 });
+            // Get all groups
+            const groups = await Group.find({}, '_id position');
             
-            // Calculate new positions with even spacing
-            const updates = groups.map((group, index) => ({
+            // Use helper to normalize positions
+            const normalizedGroups = normalizePositions(groups);
+            
+            // Create bulk update operations
+            const updates = normalizedGroups.map(group => ({
                 updateOne: {
                     filter: { _id: group._id },
-                    update: { position: (index + 1) * 10000 }
+                    update: { position: group.position }
                 }
             }));
             
             // Apply updates in a single bulk operation
             await Group.bulkWrite(updates);
+            
+            // If called internally from another controller method, don't send response
+            if (isInternal) {
+                return;
+            }
             
             res.status(200).json({ message: 'Group positions normalized successfully' });
         } catch (error) {
