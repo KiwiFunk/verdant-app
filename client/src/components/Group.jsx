@@ -2,8 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PlantCard from './PlantCard';
 import PlantCardCompact from './PlantCardCompact';
+import { useDraggable } from '@dnd-kit/core';
 
 function Groups({ group, onAddPlant, onDataChange }) {
+
+    // DnD Kit for drag-and-drop functionality
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+        id: group._id
+    });
     
     // States to manage groups and handle their editing states
     const [editingId, setEditingId] = useState(null);   
@@ -76,10 +82,20 @@ function Groups({ group, onAddPlant, onDataChange }) {
     }, []);
 
     return (
-        <div className="group-card">
+        <div className="group-card"
+            ref={setNodeRef}                        // Set group card as draggable element
+            style={{                                // Basic styling for drag state (Move to CSS later)
+                cursor: isDragging ? 'grabbing' : 'grab',
+                opacity: isDragging ? 0.5 : 1, 
+                position: 'relative' 
+            }}
+        >
 
             {/* Group header with name and controls */}
-            <div className="group-header">
+            <div className="group-header"
+                {...attributes}             // DnD Kit attributes for drag-and-drop functionality
+                {...listeners}              // DnD Kit listeners for drag-and-drop functionality
+            >
                 {editingId === group._id ? (
                     <input
                         ref={editInputRef}

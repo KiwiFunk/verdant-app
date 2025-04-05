@@ -17,6 +17,12 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         }
     };
 
+    //Temp event handler for dragend
+    const handleDragEnd = (event) => {
+        console.log('Drag ended:', event);
+        // We'll implement real logic later
+    };
+
     return (
         <div className="groups-container">
             <div className="groups-header">
