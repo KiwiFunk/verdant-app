@@ -16,6 +16,13 @@ function Group({ group, onAddPlant, onDataChange }) {
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
         id: group._id
     });
+
+    // Create sensor for DnD Kit
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 8 }
+        })
+    );
     
     // States to manage groups and handle their editing states
     const [editingId, setEditingId] = useState(null);   
