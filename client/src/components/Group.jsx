@@ -91,11 +91,7 @@ function Group({ group, onAddPlant, onDataChange }) {
         >
 
             {/* Group header with name and controls */}
-            <div className="group-header">
-
-                <div className="grab-handle" {...attributes} {...listeners}>
-                    <i className="bi bi-grip-vertical"></i>
-                </div>
+            <div className="group-header" {...attributes} {...listeners}>
 
                 {editingId === group._id ? (
                     <input
