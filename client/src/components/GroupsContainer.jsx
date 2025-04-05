@@ -32,14 +32,16 @@ function Groups({ groups, onAddPlant, onDataChange }) {
 
             {groups.length? (
             <div className="groups-grid">
-                {groups.map(group => (
-                    <Group
-                        key={group._id}
-                        group={group}
-                        onAddPlant={onAddPlant}
-                        onDataChange={onDataChange}
-                    />
-                ))}
+                {[...groups]
+                    .sort((a, b) => (a.position || 0) - (b.position || 0))
+                    .map(group => (
+                        <Group
+                            key={group._id}
+                            group={group}
+                            onAddPlant={onAddPlant}
+                            onDataChange={onDataChange}
+                        />
+                    ))}
             </div>
             ) : (
                 <div className="empty-group">

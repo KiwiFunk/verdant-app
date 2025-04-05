@@ -126,24 +126,25 @@ function Groups({ group, onAddPlant, onDataChange }) {
             <div className="group-content">
                 {group.plants?.length ? (
                     <div className="plant-card-container">
-                        {/* Iterate through each of the groups Plant objects */}
-                        {group.plants.map(plant => (
-                            // Pass the plant as a prop to the PlantCard component
-                            group.isCollapsed ? (
-                                <PlantCardCompact
-                                    key={plant._id}
-                                    plant={plant}
-                                    onDataChange={onDataChange}
-                                />
-                            ) : (
-                                <PlantCard
-                                    key={plant._id}
-                                    plant={plant}
-                                    onDataChange={onDataChange}
-                                    onEditPlant={onAddPlant}
-                                />
-                            )
-                        ))}
+                        {[...group.plants]
+                            .sort((a, b) => (a.position || 0) - (b.position || 0))
+                            .map(plant => (
+                                // Pass the plant as a prop to the PlantCard component
+                                group.isCollapsed ? (
+                                    <PlantCardCompact
+                                        key={plant._id}
+                                        plant={plant}
+                                        onDataChange={onDataChange}
+                                    />
+                                ) : (
+                                    <PlantCard
+                                        key={plant._id}
+                                        plant={plant}
+                                        onDataChange={onDataChange}
+                                        onEditPlant={onAddPlant}
+                                    />
+                                )
+                            ))}
                     </div>
                 ) : (
                     <div className="empty-group">
