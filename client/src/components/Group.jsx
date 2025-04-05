@@ -14,9 +14,28 @@ function Group({ group, onAddPlant, onDataChange }) {
     const sortedPlants = [...group.plants].sort((a, b) => (a.position || 0) - (b.position || 0)); 
 
     // DnD Kit for drag-and-drop functionality
-    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-        id: group._id
+    const { attributes, listeners, setNodeRef: setDragRef, isDragging } = useDraggable({
+        id: group._id,
+        data: {
+            type: 'group',
+            group
+        }
     });
+
+    // Drop target for plant items
+    const { setNodeRef: setDropRef, isOver } = useDroppable({
+        id: `group-${group._id}`, // Add prefix to avoid ID conflicts
+        data: {
+            type: 'group',
+            groupId: group._id
+        }
+    });
+
+    // Combine the refs for drag and drop functionality
+    const setRefs = (node) => {
+        setDragRef(node);
+        setDropRef(node);
+    };
 
     // States to manage groups and handle their editing states
     const [editingId, setEditingId] = useState(null);   
@@ -90,7 +109,7 @@ function Group({ group, onAddPlant, onDataChange }) {
 
     return (
         <div className="group-card"
-            ref={setNodeRef}                        // Set group card as draggable element
+            ref={setRefs}                           // Set group card as draggable element
             style={{                                // Basic styling for drag state (Move to CSS later)
                 opacity: isDragging ? 0.5 : 1, 
                 position: 'relative' 
