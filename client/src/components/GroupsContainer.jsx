@@ -31,10 +31,24 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         }
     };
 
-    //Temp event handler for dragend
-    const handleDragEnd = (event) => {
-        console.log('Drag ended:', event);
-        // We'll implement real logic later
+    //Handle drag events for groups.
+    const handleDragEnd = async (event) => {
+        const { active, over } = event;
+        
+        // If not dropped on a valid target or dropped on itself, do nothing
+        if (!over || active.id === over.id) {
+            return;
+        }
+        
+        console.log(`Moving group ${active.id} to position of ${over.id}`);
+        
+        // Find the groups by ID
+        const sortedGroups = [...groups].sort((a, b) => (a.position || 0) - (b.position || 0));
+        const draggedIndex = sortedGroups.findIndex(g => g._id === active.id);
+        const targetIndex = sortedGroups.findIndex(g => g._id === over.id);
+        
+        // Replace with API calls to update the positions of the groups in the database
+        console.log(`Moving from index ${draggedIndex} to index ${targetIndex}`);
     };
 
     return (
