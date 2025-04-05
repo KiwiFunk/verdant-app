@@ -4,7 +4,7 @@ import PlantCard from './PlantCard';
 import PlantCardCompact from './PlantCardCompact';
 import { useDraggable } from '@dnd-kit/core';
 
-function Groups({ group, onAddPlant, onDataChange }) {
+function Group({ group, onAddPlant, onDataChange }) {
 
     // DnD Kit for drag-and-drop functionality
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
@@ -178,4 +178,4 @@ function Groups({ group, onAddPlant, onDataChange }) {
     );
 }
 
-export default Groups;
+export default Group;

@@ -14,6 +14,9 @@ function Groups({ groups, onAddPlant, onDataChange }) {
     
     const API_URL = 'http://localhost:5000/api';
 
+    // Sort our groups by position (if available)
+    const sortedGroups = [...groups].sort((a, b) => (a.position || 0) - (b.position || 0));
+
     // Set up DnD kit sensors.
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -31,44 +34,44 @@ function Groups({ groups, onAddPlant, onDataChange }) {
         }
     };
 
-    //Handle drag events for groups.
+    
+    // Handle the drag end event
     const handleDragEnd = async (event) => {
         const { active, over } = event;
-        
-        // If not dropped on a valid target or dropped on itself, do nothing
-        if (!over || active.id === over.id) {
-            return;
-        }
-        
+    
+        // Exit if no valid drop target or dropped on itself
+        if (!over || active.id === over.id) return;
+    
         try {
-            // Find the dragged group and drop target indices
-            const sortedGroups = [...groups].sort((a, b) => (a.position || 0) - (b.position || 0));
-            const draggedIndex = sortedGroups.findIndex(g => g._id === active.id);
-            const targetIndex = sortedGroups.findIndex(g => g._id === over.id);
-            
-            // Find the IDs needed for the API
-            const beforeGroupId = targetIndex > 0 ? sortedGroups[targetIndex - 1]._id : null;
-            const afterGroupId = targetIndex < sortedGroups.length - 1 ? 
-                sortedGroups[targetIndex]._id : null;
-            
-            console.log('Updating position with:', {
-                groupId: active.id,
-                beforeId: beforeGroupId,
-                afterId: afterGroupId
-            });
-            
-            // Call the API to update the position
-            await axios.patch(`${API_URL}/groups/reorder`, {
-                groupId: active.id,
-                beforeId: beforeGroupId,
-                afterId: afterGroupId
-            });
-            
-            // Refresh the data
+            const draggedId = active.id;
+            const overId = over.id;
+    
+            console.log(`Moving group ${draggedId} to position of ${overId}`);
+    
+            // Find indices of dragged item and drop target
+            const draggedIndex = sortedGroups.findIndex(g => g._id === draggedId);
+            const targetIndex = sortedGroups.findIndex(g => g._id === overId);
+    
+            // Determine reordering direction
+            const isDraggingUp = draggedIndex > targetIndex;
+    
+            // Calculate beforeId and afterId
+            const beforeId = isDraggingUp
+                ? targetIndex > 0 ? sortedGroups[targetIndex - 1]._id : null
+                : overId;
+            const afterId = isDraggingUp
+                ? overId
+                : targetIndex < sortedGroups.length - 1 ? sortedGroups[targetIndex + 1]._id : null;
+    
+            console.log('API call with:', { groupId: draggedId, beforeId, afterId });
+    
+            // Call the API to reorder
+            await axios.patch(`${API_URL}/groups/reorder`, { groupId: draggedId, beforeId, afterId });
+    
+            // Refresh data to reflect the new order
             onDataChange();
-            
         } catch (error) {
-            console.error('Error reordering groups:', error);
+            console.error('Reorder error:', error.response?.data || error.message);
         }
     };
 
@@ -89,8 +92,7 @@ function Groups({ groups, onAddPlant, onDataChange }) {
             {groups.length? (
                 <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
                     <div className="groups-grid">
-                        {[...groups]
-                            .sort((a, b) => (a.position || 0) - (b.position || 0))
+                        {sortedGroups
                             .map(group => (
                                 <DroppableArea key={group._id} id={group._id}>
                                     <Group
