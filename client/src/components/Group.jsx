@@ -98,46 +98,6 @@ function Group({ group, onAddPlant, onDataChange }) {
         return () => document.removeEventListener('click', handleClickOutside);     // Cleanup event listener
     }, []);
 
-    // Handle plant drag within group
-    const handlePlantDragEnd = async (event) => {
-        const { active, over } = event;
-    
-        // Exit if no valid drop target or dropped on itself
-        if (!over || active.id === over.id) return;
-    
-        try {
-            const draggedId = active.id; // The plant being dragged
-            const targetId = over.id;   // The plant it was dropped onto
-    
-            console.log(`Reordering plant ${draggedId} to position of ${targetId}`);
-    
-            // Find indices of dragged plant and target plant
-            const draggedIndex = sortedPlants.findIndex(p => p._id === draggedId);
-            const targetIndex = sortedPlants.findIndex(p => p._id === targetId);
-    
-            // Determine reordering direction
-            const isDraggingUp = draggedIndex > targetIndex;
-    
-            // Calculate beforeId and afterId based on drag direction
-            const beforeId = isDraggingUp
-                ? targetIndex > 0 ? sortedPlants[targetIndex - 1]._id : null
-                : targetId;
-            const afterId = isDraggingUp
-                ? targetId
-                : targetIndex < sortedPlants.length - 1 ? sortedPlants[targetIndex + 1]._id : null;
-    
-            console.log('API call with:', { plantId: draggedId, beforeId, afterId });
-    
-            // Call the reordering API
-            await axios.patch(`${API_URL}/plants/reorder`, { plantId: draggedId, beforeId, afterId });
-    
-            // Refresh the data to reflect the new order
-            onDataChange();
-        } catch (error) {
-            console.error('Error reordering plant:', error.response?.data || error.message);
-        }
-    };
-
     return (
         <div className="group-card"
             ref={setNodeRef}                        // Set group card as draggable element
@@ -198,30 +158,28 @@ function Group({ group, onAddPlant, onDataChange }) {
             {/* Group body */}
             <div className="group-content">
                 {group.plants?.length ? (
-                    <DndContext sensors={sensors} onDragEnd={handlePlantDragEnd}>
                         <div className="plant-card-container">
                             {sortedPlants
                                 .map(plant => (
-                                    // Pass the plant as a prop to the PlantCard component
-                                    <DroppableArea key={plant._id} id={plant._id}>
-                                        {group.isCollapsed ? (
-                                            <PlantCardCompact
-                                                key={plant._id}
-                                                plant={plant}
-                                                onDataChange={onDataChange}
-                                            />
-                                        ) : (
-                                            <PlantCard
-                                                key={plant._id}
-                                                plant={plant}
-                                                onDataChange={onDataChange}
-                                                onEditPlant={onAddPlant}
-                                            />
-                                        )}
-                                    </DroppableArea>
-                                ))}
-                        </div>
-                    </DndContext>
+                                // Pass the plant as a prop to the PlantCard component
+                                <DroppableArea key={plant._id} id={plant._id}>
+                                    {group.isCollapsed ? (
+                                        <PlantCardCompact
+                                            key={plant._id}
+                                            plant={plant}
+                                            onDataChange={onDataChange}
+                                        />
+                                    ) : (
+                                        <PlantCard
+                                            key={plant._id}
+                                            plant={plant}
+                                            onDataChange={onDataChange}
+                                            onEditPlant={onAddPlant}
+                                        />
+                                    )}
+                                </DroppableArea>
+                            ))}
+                    </div>
                 ) : (
                     <div className="empty-group">
                         <i className="bi bi-flower1"></i>
