@@ -1,19 +1,20 @@
 const Plant = require('../models/PlantModel');
 const Group = require('../models/GroupModel');
+const { 
+    getPositionForNewItem, 
+    getPositionBetween, 
+    needsNormalization, 
+    normalizePositions 
+} = require('../utils/positionHelpers')
 
 const plantController = {
 
     // Create new plant object (POST Request)
     createPlant: async (req, res) => {
         try {
-            // Find highest position in the group for spatial positioning
-            const groupPlants = await Plant.find({ group: req.body.group });
-            let position = 10000;
-            
-            if (groupPlants.length > 0) {
-                const maxPosition = Math.max(...groupPlants.map(p => p.position || 0));
-                position = maxPosition + 10000;
-            }
+            // Find plants in the same group to calculate position
+            const groupPlants = await Plant.find({ group: req.body.group }, 'position');
+            const position = getPositionForNewItem(groupPlants);
             
             const newPlant = new Plant({
                 ...req.body,
@@ -105,37 +106,83 @@ const plantController = {
     // Reorder plants endpoint
     reorderPlant: async (req, res) => {
         try {
-            const { plantId, newPosition } = req.body;
+            const { plantId, beforeId, afterId, groupId } = req.body;
             
+            // Find the positions of before and after plants
+            const beforePlant = beforeId ? await Plant.findById(beforeId, 'position') : null;
+            const afterPlant = afterId ? await Plant.findById(afterId, 'position') : null;
+            
+            // Calculate new position using helper
+            const beforePosition = beforePlant ? beforePlant.position : null;
+            const afterPosition = afterPlant ? afterPlant.position : null;
+            const newPosition = getPositionBetween(beforePosition, afterPosition);
+            
+            // Find the current plant to get its original groupId
+            const currentPlant = await Plant.findById(plantId);
+            if (!currentPlant) {
+                return res.status(404).json({ message: 'Plant not found' });
+            }
+            
+            // Check if group is changing
+            const originalGroupId = currentPlant.group.toString();
+            const targetGroupId = groupId || originalGroupId;
+            
+            // Update the plant position and potentially group
             const updatedPlant = await Plant.findByIdAndUpdate(
                 plantId,
-                { position: newPosition },
+                { 
+                    position: newPosition,
+                    ...(groupId && { group: groupId })
+                },
                 { new: true }
             );
             
-            if (!updatedPlant) {
-                return res.status(404).json({ message: 'Plant not found' });
+            // If the group changed, update group references
+            if (groupId && originalGroupId !== targetGroupId) {
+                // Remove from old group
+                await Group.findByIdAndUpdate(
+                    originalGroupId,
+                    { $pull: { plants: plantId } }
+                );
+                
+                // Add to new group
+                await Group.findByIdAndUpdate(
+                    targetGroupId,
+                    { $push: { plants: plantId } }
+                );
+            }
+            
+            // Check if normalization is needed after this operation
+            const plantsInGroup = await Plant.find({ group: targetGroupId }, 'position');
+            if (needsNormalization(plantsInGroup)) {
+                await plantController.normalizePlantPositions(req, res, targetGroupId, true);
+                return; // The response will be sent by normalizePlantPositions
             }
             
             res.status(200).json(updatedPlant);
         } catch (error) {
+            console.error('Error reordering plant:', error);
             res.status(400).json({ message: error.message });
         }
     },
     
     // Normalize plant positions endpoint
-    normalizePlantPositions: async (req, res) => {
+    normalizePlantPositions: async (req, res, groupIdParam = null, isInternal = false) => {
         try {
-            const { groupId } = req.params;
+            // Get groupId either from params, function argument, or request body
+            const groupId = groupIdParam || req.params.groupId;
             
-            // Get all plants in the group sorted by position
-            const plants = await Plant.find({ group: groupId }).sort({ position: 1 });
+            // Get all plants in the group
+            const plants = await Plant.find({ group: groupId }, '_id position');
             
-            // Calculate new positions with even spacing
-            const updates = plants.map((plant, index) => ({
+            // Use helper to normalize positions
+            const normalizedPlants = normalizePositions(plants);
+            
+            // Create bulk update operations
+            const updates = normalizedPlants.map(plant => ({
                 updateOne: {
                     filter: { _id: plant._id },
-                    update: { position: (index + 1) * 10000 }
+                    update: { position: plant.position }
                 }
             }));
             
@@ -144,12 +191,17 @@ const plantController = {
                 await Plant.bulkWrite(updates);
             }
             
+            // If called internally from another controller method, don't send response
+            if (isInternal) {
+                return;
+            }
+            
             res.status(200).json({ message: 'Plant positions normalized successfully' });
         } catch (error) {
+            console.error('Error normalizing plant positions:', error);
             res.status(500).json({ message: error.message });
         }
     }
-
 };
 
 module.exports = plantController;
